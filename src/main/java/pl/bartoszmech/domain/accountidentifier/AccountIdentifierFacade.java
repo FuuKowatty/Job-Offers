@@ -14,4 +14,13 @@ public class AccountIdentifierFacade {
                 .orElseThrow(() -> new UserNotFoundException("User with such username does not exist"));
         return UserMapper.mapFromUser(user);
     }
+
+    public UserDto register(UserDto userDto) {
+        //...validation in the future!
+        if(repository.isExistsByUsername(userDto.username())) {
+            throw new UserAlreadyExistsException("Provided username is already used by other user");
+        }
+        User user = repository.register(UserMapper.mapToUser(userDto));
+        return UserMapper.mapFromUser(user);
+    }
 }

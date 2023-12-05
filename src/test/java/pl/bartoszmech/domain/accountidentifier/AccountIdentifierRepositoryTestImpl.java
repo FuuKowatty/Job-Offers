@@ -9,7 +9,7 @@ public class AccountIdentifierRepositoryTestImpl implements AccountIdentifierRep
 
     @Override
     public User save(User user) {
-        database.put(user.username(), user);
+        database.put(user.username(),user);
         return user;
     }
 
@@ -25,7 +25,14 @@ public class AccountIdentifierRepositoryTestImpl implements AccountIdentifierRep
     }
 
     @Override
-    public User register(String username, String password) {
-        return null;
+    public User register(User user) {
+        database.put(user.username(), user);
+        return user;
+    }
+
+
+    @Override
+    public boolean isExistsByUsername(String username) {
+        return database.containsKey(username);
     }
 }

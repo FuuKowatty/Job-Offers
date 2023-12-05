@@ -25,6 +25,26 @@ class AccountIdentifierFacadeTest {
         //when&then
         assertThrows(UserNotFoundException.class, () -> configurator.findByUsername(nonExistentUsername));
     }
+
+    @Test void should_throw_user_already_exists_exception() {
+        //given
+        String username = "Jacex";
+        String password = "QWERY!@345";
+        UserDto expectedUser = UserMapper.mapFromUser(configurator.repository.save(User.builder().username(username).password(password).build()));
+        //when&then
+        assertThrows(UserAlreadyExistsException.class, () -> configurator.register(UserDto.builder().username(username).password(password).build()));
+    }
+
+    @Test void should_successfully_register_user() {
+        //given
+        String username = "Jacex";
+        String password = "QWERTYU!@3456";
+        //when
+        UserDto userDto = configurator.register(UserDto.builder().username(username).password(password).build());
+        //then
+        assertThat(userDto.username()).isEqualTo(username);
+        assertThat(userDto.password()).isEqualTo(password);
+    }
 }
 
 
