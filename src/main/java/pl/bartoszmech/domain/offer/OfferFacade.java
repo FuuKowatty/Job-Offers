@@ -1,7 +1,8 @@
 package pl.bartoszmech.domain.offer;
 
 import lombok.AllArgsConstructor;
-import pl.bartoszmech.domain.offer.dto.InputOfferResultDto;
+import pl.bartoszmech.domain.offer.dto.CreateOfferDtoResult;
+import pl.bartoszmech.domain.offer.dto.InputOfferDto;
 import pl.bartoszmech.domain.offer.dto.OfferDto;
 
 import java.util.List;
@@ -18,9 +19,14 @@ public class OfferFacade {
     OfferValidator validator;
     OfferRepository repository;
     OfferFetcher fetcher;
-    public InputOfferResultDto createOffer(String title, String company, String salary, String url) {
+    public CreateOfferDtoResult createOffer(InputOfferDto offerDto) {
+        String title = offerDto.title();
+        String company = offerDto.company();
+        String salary = offerDto.salary();
+        String url = offerDto.jobUrl();
+
         if(validator.validate(title, company, salary)) {
-            return InputOfferResultDto
+            return CreateOfferDtoResult
                     .builder()
                     .message(FAILURE)
                     .build();
@@ -37,7 +43,7 @@ public class OfferFacade {
                         .build()
         );
 
-        return InputOfferResultDto
+        return CreateOfferDtoResult
                 .builder()
                 .message(SUCCESS)
                 .id(savedOffer.id())
