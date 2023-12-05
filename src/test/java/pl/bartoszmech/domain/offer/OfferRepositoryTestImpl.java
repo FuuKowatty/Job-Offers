@@ -1,7 +1,5 @@
 package pl.bartoszmech.domain.offer;
 
-import pl.bartoszmech.domain.offer.dto.OfferDto;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +19,9 @@ public class OfferRepositoryTestImpl implements OfferRepository {
                 .title(entity.title())
                 .company(entity.company())
                 .salary(entity.salary())
-                .createdAt(createdAt).build();
+                .jobUrl(entity.jobUrl())
+                .createdAt(createdAt)
+                .build();
         database.put(id, offer);
         return offer;
     }
@@ -39,8 +39,7 @@ public class OfferRepositoryTestImpl implements OfferRepository {
         return database.get(id);
     }
 
-    @Override
-    public boolean isNotExistsByUrl(String url) {
+    public boolean isExistsByUrl(String url) {
         return !database
                 .values()
                 .stream()

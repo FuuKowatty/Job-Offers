@@ -1,6 +1,7 @@
 package pl.bartoszmech.domain.offer;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static pl.bartoszmech.domain.offer.OfferValidator.*;
 
 import org.junit.jupiter.api.Test;
@@ -37,6 +38,25 @@ class OfferFacadeTest {
         assertThat(result.title()).isEqualTo(title);
         assertThat(result.company()).isEqualTo(company);
         assertThat(result.salary()).isEqualTo(salary);
+    }
+
+    @Test void should_throw_exception_on_create_offer_with_taken_url() {
+        //given
+        String title = "Junior Java Developer";
+        String company = "Capcake";
+        String salary = "0.00 - 1.00 USD";
+        String url = "https://example-site.com";
+        configurator.repository.save(Offer
+                .builder()
+                .id("1")
+                .title(title)
+                .company(company)
+                .salary(salary)
+                .jobUrl(url)
+                .build()
+        );
+        //when&then
+        assertThrows(UrlAlreadyExistsException.class, () -> configurator.createOffer("Some title", "Some Company", "No money", url));
     }
     @Test void should_return_failure_on_empty_title() {
         //given
