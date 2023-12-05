@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class OfferFacade {
+    public static final String FAILURE = "failure";
+    public static final String SUCCESS = "success";
     OfferValidator validator;
     OfferRepository repository;
     HashGenerator hashGenerator;
@@ -20,14 +22,14 @@ public class OfferFacade {
         if(validator.validate(title, company, salary)) {
             return InputOfferResultDto
                     .builder()
-                    .message("failure")
+                    .message(FAILURE)
                     .build();
         }
 
         if(repository.isNotExistsByUrl(url)) {
             return InputOfferResultDto
                     .builder()
-                    .message("failure")
+                    .message(FAILURE)
                     .build();
         }
 
@@ -46,7 +48,7 @@ public class OfferFacade {
 
         return InputOfferResultDto
                 .builder()
-                .message("success")
+                .message(SUCCESS)
                 .id(savedOffer.id())
                 .title(savedOffer.title())
                 .company(savedOffer.company())
