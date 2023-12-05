@@ -1,6 +1,7 @@
 package pl.bartoszmech.domain.offer;
 
 import lombok.AllArgsConstructor;
+import pl.bartoszmech.domain.accountidentifier.dto.UserDto;
 import pl.bartoszmech.domain.offer.dto.InputOfferResultDto;
 import pl.bartoszmech.domain.offer.dto.OfferDto;
 
@@ -16,7 +17,6 @@ public class OfferFacade {
     public static final String SUCCESS = "success";
     OfferValidator validator;
     OfferRepository repository;
-    HashGenerator hashGenerator;
     OfferFetcher fetcher;
     public InputOfferResultDto createOffer(String title, String company, String salary, String url) {
         if(validator.validate(title, company, salary)) {
@@ -32,17 +32,12 @@ public class OfferFacade {
                     .message(FAILURE)
                     .build();
         }
-
-        String id = hashGenerator.getHash();
-        LocalDateTime createdAt = LocalDateTime.now();
         Offer savedOffer = repository.save(
                 Offer.builder()
-                        .id(id)
                         .title(title)
                         .company(company)
                         .salary(salary)
                         .jobUrl(url)
-                        .createdAt(createdAt)
                         .build()
         );
 
@@ -54,7 +49,7 @@ public class OfferFacade {
                 .company(savedOffer.company())
                 .salary(savedOffer.salary())
                 .createdAt(savedOffer.createdAt())
-                .jobUrl(url)
+                .jobUrl(savedOffer.jobUrl())
                 .build();
     }
 
@@ -67,7 +62,8 @@ public class OfferFacade {
     }
 
     public OfferDto getOfferById(String id) {
-        return OfferMapper.mapFromOffer(repository.findById(id));
+        OfferDto userDto = OfferMapper.mapFromOffer(repository.findById(id));
+        return userDto;
     }
 
     public Set<OfferDto> fetchAllOfferAndSaveAllIfNotExists() {

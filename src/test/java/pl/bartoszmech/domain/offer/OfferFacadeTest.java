@@ -10,7 +10,7 @@ import pl.bartoszmech.domain.offer.dto.OfferDto;
 import java.util.Set;
 
 class OfferFacadeTest {
-    OfferFacade configurator = new OfferConfiguration().createForTests(new OfferValidator(), new OfferRepositoryTestImpl(), new HashGeneratorTestImpl(), new OfferFetcherTestImpl());
+    OfferFacade configurator = new OfferConfiguration().createForTests(new OfferValidator(), new OfferRepositoryTestImpl(), new OfferFetcherTestImpl());
     @Test
     public void should_return_success_message_on_add_offer() {
         //given
@@ -140,11 +140,12 @@ class OfferFacadeTest {
         String salary = "0.00 - 1.00 USD";
         String url = "https://example-site.com";
         InputOfferResultDto inputOfferResultDto = configurator.createOffer(title, company, salary, url);
+        String id = inputOfferResultDto.id();
         //when
-        OfferDto offerDto = configurator.getOfferById("123");
+        OfferDto offerDto = configurator.getOfferById(id);
         //then
         OfferDto expectedOfferDto = OfferDto.builder()
-                .id(inputOfferResultDto.id())
+                .id(id)
                 .title(inputOfferResultDto.title())
                 .company(inputOfferResultDto.company())
                 .salary(inputOfferResultDto.salary())
