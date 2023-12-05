@@ -10,7 +10,7 @@ import pl.bartoszmech.domain.offer.dto.OfferDto;
 import java.util.Set;
 
 class OfferFacadeTest {
-    OfferFacade configurator = new OfferConfiguration().createForTest(new OfferValidator(), new OfferRepositoryTestImpl(), new HashGeneratorTestImpl());
+    OfferFacade configurator = new OfferConfiguration().createForTest(new OfferValidator(), new OfferRepositoryTestImpl(), new HashGeneratorTestImpl(), new OfferFetcherTestImpl());
     @Test
     public void should_return_success_message_on_add_offer() {
         //given
@@ -126,7 +126,7 @@ class OfferFacadeTest {
                 .title(inputOfferResultDto.title())
                 .company(inputOfferResultDto.company())
                 .salary(inputOfferResultDto.salary())
-                .created_at(inputOfferResultDto.createdAt())
+                .createdAt(inputOfferResultDto.createdAt())
                 .jobUrl(inputOfferResultDto.jobUrl())
                 .build();
         Set<OfferDto> expectedOfferList = Set.of(offerDto);
@@ -148,12 +148,26 @@ class OfferFacadeTest {
                 .title(inputOfferResultDto.title())
                 .company(inputOfferResultDto.company())
                 .salary(inputOfferResultDto.salary())
-                .created_at(inputOfferResultDto.createdAt())
+                .createdAt(inputOfferResultDto.createdAt())
                 .jobUrl(inputOfferResultDto.jobUrl())
                 .build();
         assertThat(offerDto).isEqualTo(expectedOfferDto);
     }
 
+    @Test void should_fetch_new_offers() {
+        //given
+
+        //when
+        Set<OfferDto> fetchedOffers = configurator.fetchAllOfferAndSaveAllIfNotExists();
+
+        //then
+        Set<OfferDto> expectedOffers = Set.of(
+                OfferDto.builder().title("Junior Java Developer").company("randomCompany").salary("1000EURO").jobUrl("https://example.com").build(),
+                OfferDto.builder().title("Junior Java Developer").company("randomCompany").salary("800EURO").jobUrl("https://example1.com").build(),
+                OfferDto.builder().title("Junior Java Developer").company("randomCompany").salary("2000EURO").jobUrl("https://example2.com").build()
+        );
+        assertThat(fetchedOffers).isEqualTo(expectedOffers);
+    }
 
     private String createString(int length) {
         return "x".repeat(length);
