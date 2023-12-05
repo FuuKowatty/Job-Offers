@@ -29,8 +29,8 @@ public class OfferRepositoryTestImpl implements OfferRepository {
     }
 
     @Override
-    public boolean isExistsByUrl(String url) {
-        return database
+    public boolean isNotExistsByUrl(String url) {
+        return !database
                 .values()
                 .stream()
                 .filter(offer -> offer.jobUrl() == url)

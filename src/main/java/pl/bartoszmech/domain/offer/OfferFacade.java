@@ -23,7 +23,7 @@ public class OfferFacade {
                     .build();
         }
 
-        if(repository.isExistsByUrl(url)) {
+        if(repository.isNotExistsByUrl(url)) {
             return InputOfferResultDto
                     .builder()
                     .message("failure")
