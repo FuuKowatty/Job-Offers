@@ -1,5 +1,5 @@
 package pl.bartoszmech.domain.offer;
 
-interface HashGenerator {
+ interface HashGenerator {
     String getHash();
 }

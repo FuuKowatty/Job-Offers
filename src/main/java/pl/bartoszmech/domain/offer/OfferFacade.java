@@ -50,8 +50,8 @@ public class OfferFacade {
                 .title(savedOffer.title())
                 .company(savedOffer.company())
                 .salary(savedOffer.salary())
-                .created_at(savedOffer.createdAt())
-                .job_url(url)
+                .createdAt(savedOffer.createdAt())
+                .jobUrl(url)
                 .build();
     }
 

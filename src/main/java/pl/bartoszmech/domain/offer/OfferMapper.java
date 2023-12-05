@@ -10,6 +10,7 @@ public class OfferMapper {
                 .title(offer.title())
                 .company(offer.company())
                 .salary(offer.salary())
+                .jobUrl(offer.jobUrl())
                 .created_at(offer.createdAt())
                 .build();
     }
