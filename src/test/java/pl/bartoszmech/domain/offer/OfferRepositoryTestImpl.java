@@ -1,5 +1,7 @@
 package pl.bartoszmech.domain.offer;
 
+import pl.bartoszmech.domain.offer.dto.OfferDto;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,6 +21,11 @@ public class OfferRepositoryTestImpl implements OfferRepository {
                 .values()
                 .stream()
                 .toList();
+    }
+
+    @Override
+    public Offer findById(String id) {
+        return database.get(id);
     }
 
 }

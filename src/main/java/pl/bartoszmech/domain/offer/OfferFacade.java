@@ -6,7 +6,6 @@ import pl.bartoszmech.domain.offer.dto.OfferDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 
 @AllArgsConstructor
@@ -14,7 +13,7 @@ public class OfferFacade {
     OfferValidator validator;
     OfferRepository repository;
     HashGenerator hashGenerator;
-    public InputOfferResultDto createOffer(String title, String company, String salary) {
+    public InputOfferResultDto createOffer(String title, String company, String salary, String url) {
         if(validator.validate(title, company, salary)) {
             return InputOfferResultDto
                     .builder()
@@ -23,7 +22,17 @@ public class OfferFacade {
         }
         String id = hashGenerator.getHash();
         LocalDateTime createdAt = LocalDateTime.now();
-        Offer savedOffer = repository.save(new Offer(id, title, company, salary, createdAt));
+        Offer savedOffer = repository.save(
+                Offer.builder()
+                        .id(id)
+                        .title(title)
+                        .company(company)
+                        .salary(salary)
+                        .jobUrl(url)
+                        .createdAt(createdAt)
+                        .build()
+        );
+
         return InputOfferResultDto
                 .builder()
                 .message("success")
@@ -31,7 +40,7 @@ public class OfferFacade {
                 .title(savedOffer.title())
                 .company(savedOffer.company())
                 .salary(savedOffer.salary())
-                .created_at(savedOffer.created_at())
+                .created_at(savedOffer.createdAt())
                 .build();
     }
 

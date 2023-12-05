@@ -13,8 +13,9 @@ class OfferFacadeTest {
         String title = "Junior Java Developer";
         String company = "Capcake";
         String salary = "0.00 - 1.00 USD";
+        String url = "https://example-site.com";
         //when
-        InputOfferResultDto result = offerFacade.createOffer(title, company, salary);
+        InputOfferResultDto result = offerFacade.createOffer(title, company, salary, url);
         //then
         assertThat(result.message()).isEqualTo("success");
     }
@@ -24,21 +25,23 @@ class OfferFacadeTest {
         String title = "Junior Java Developer";
         String company = "Capcake";
         String salary = "0.00 - 1.00 USD";
+        String url = "https://example-site.com";
         //when
-        InputOfferResultDto offer = offerFacade.createOffer(title, company, salary);
+        InputOfferResultDto result = offerFacade.createOffer(title, company, salary, url);
         //then
-        assertThat(offer).isInstanceOf(InputOfferResultDto.class);
-        assertThat(offer.title()).isEqualTo(title);
-        assertThat(offer.company()).isEqualTo(company);
-        assertThat(offer.salary()).isEqualTo(salary);
+        assertThat(result).isInstanceOf(InputOfferResultDto.class);
+        assertThat(result.title()).isEqualTo(title);
+        assertThat(result.company()).isEqualTo(company);
+        assertThat(result.salary()).isEqualTo(salary);
     }
     @Test void should_return_failure_on_empty_title() {
         //given
         String title = "";
         String company = "Capcake";
         String salary = "0.00 - 1.00 USD";
+        String url = "https://example-site.com";
         //when
-        InputOfferResultDto result = offerFacade.createOffer(title, company, salary);
+        InputOfferResultDto result = offerFacade.createOffer(title, company, salary, url);
         //then
         assertThat(result.message()).isEqualTo("failure");
     }
