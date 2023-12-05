@@ -10,7 +10,7 @@ import pl.bartoszmech.domain.offer.dto.OfferDto;
 import java.util.Set;
 
 class OfferFacadeTest {
-    OfferFacade configurator = new OfferConfiguration().createForTest(new OfferValidator(), new OfferRepositoryTestImpl(), new HashGeneratorTestImpl(), new OfferFetcherTestImpl());
+    OfferFacade configurator = new OfferConfiguration().createForTests(new OfferValidator(), new OfferRepositoryTestImpl(), new HashGeneratorTestImpl(), new OfferFetcherTestImpl());
     @Test
     public void should_return_success_message_on_add_offer() {
         //given
