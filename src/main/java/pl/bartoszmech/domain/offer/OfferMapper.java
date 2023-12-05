@@ -11,7 +11,19 @@ public class OfferMapper {
                 .company(offer.company())
                 .salary(offer.salary())
                 .jobUrl(offer.jobUrl())
-                .created_at(offer.createdAt())
+                .createdAt(offer.createdAt())
+                .build();
+    }
+
+    public static Offer mapToOffer(OfferDto offer) {
+        return  Offer
+                .builder()
+                .id(offer.id())
+                .title(offer.title())
+                .company(offer.company())
+                .salary(offer.salary())
+                .jobUrl(offer.jobUrl())
+                .createdAt(offer.createdAt())
                 .build();
     }
 }

@@ -38,4 +38,9 @@ public class OfferRepositoryTestImpl implements OfferRepository {
                 .isEmpty();
     }
 
+    @Override
+    public void deleteAll() {
+        database.clear();
+    }
+
 }

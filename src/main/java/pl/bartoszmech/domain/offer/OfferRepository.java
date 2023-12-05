@@ -7,4 +7,5 @@ public interface OfferRepository {
     List<Offer> findAll();
     Offer findById(String id);
     boolean isNotExistsByUrl(String url);
+    void deleteAll();
 }

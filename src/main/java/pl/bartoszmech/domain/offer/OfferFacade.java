@@ -15,6 +15,7 @@ public class OfferFacade {
     OfferValidator validator;
     OfferRepository repository;
     HashGenerator hashGenerator;
+    OfferFetcher fetcher;
     public InputOfferResultDto createOffer(String title, String company, String salary, String url) {
         if(validator.validate(title, company, salary)) {
             return InputOfferResultDto
@@ -67,5 +68,11 @@ public class OfferFacade {
         return OfferMapper.mapFromOffer(repository.findById(id));
     }
 
+    public Set<OfferDto> fetchAllOfferAndSaveAllIfNotExists() {
+        Set<OfferDto> fetchedOffers = fetcher.fetch();
+        repository.deleteAll();
+        fetchedOffers.stream().map(offer -> repository.save(OfferMapper.mapToOffer(offer)));
+        return fetchedOffers;
+    }
 }
 
