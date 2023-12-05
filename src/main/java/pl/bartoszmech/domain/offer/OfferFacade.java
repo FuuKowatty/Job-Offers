@@ -43,5 +43,9 @@ public class OfferFacade {
                 .toList();
     }
 
+    public OfferDto getOfferById(String id) {
+        return OfferMapper.mapFromOffer(repository.findById(id));
+    }
+
 }
 
