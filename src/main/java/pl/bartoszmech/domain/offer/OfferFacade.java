@@ -41,6 +41,7 @@ public class OfferFacade {
                 .company(savedOffer.company())
                 .salary(savedOffer.salary())
                 .created_at(savedOffer.createdAt())
+                .job_url(url)
                 .build();
     }
 
