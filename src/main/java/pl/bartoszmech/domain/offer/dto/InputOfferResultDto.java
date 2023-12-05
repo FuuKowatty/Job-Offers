@@ -1,4 +1,9 @@
 package pl.bartoszmech.domain.offer.dto;
 
-public record inputOfferDto() {
+import lombok.Builder;
+
+import java.time.LocalDateTime;
+
+@Builder
+public record InputOfferResultDto(String message, String id, String title, String company, String salary, LocalDateTime created_at) {
 }

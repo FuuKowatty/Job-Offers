@@ -1,4 +1,8 @@
 package pl.bartoszmech.domain.offer;
 
-public interface Repository {
+import java.util.List;
+
+public interface OfferRepository {
+    Offer save(Offer offer);
+    List<Offer> findAll();
 }
