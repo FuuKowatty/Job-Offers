@@ -1,11 +1,9 @@
 package pl.bartoszmech.domain.offer;
 
 import lombok.AllArgsConstructor;
-import pl.bartoszmech.domain.accountidentifier.dto.UserDto;
 import pl.bartoszmech.domain.offer.dto.InputOfferResultDto;
 import pl.bartoszmech.domain.offer.dto.OfferDto;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,6 +13,8 @@ import java.util.stream.Collectors;
 public class OfferFacade {
     public static final String FAILURE = "failure";
     public static final String SUCCESS = "success";
+    public static final String URL_TAKEN = "Url is already taken";
+
     OfferValidator validator;
     OfferRepository repository;
     OfferFetcher fetcher;
@@ -25,12 +25,8 @@ public class OfferFacade {
                     .message(FAILURE)
                     .build();
         }
-
-        if(repository.isNotExistsByUrl(url)) {
-            return InputOfferResultDto
-                    .builder()
-                    .message(FAILURE)
-                    .build();
+        if(repository.isExistsByUrl(url)) {
+            throw new UrlAlreadyExistsException(URL_TAKEN);
         }
         Offer savedOffer = repository.save(
                 Offer.builder()

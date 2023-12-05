@@ -4,6 +4,6 @@ import pl.bartoszmech.domain.offer.dto.OfferDto;
 
 import java.util.Set;
 
-public interface OfferFetcher {
+interface OfferFetcher {
     Set<OfferDto> fetch();
 }
