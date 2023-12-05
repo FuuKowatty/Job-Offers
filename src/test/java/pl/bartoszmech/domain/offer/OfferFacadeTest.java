@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import pl.bartoszmech.domain.offer.dto.InputOfferResultDto;
 
 class OfferFacadeTest {
-    OfferFacade offerFacade = new OfferFacade(new OfferValidator(), new OfferRepositoryTestImpl());
+    OfferFacade offerFacade = new OfferFacade(new OfferValidator(), new OfferRepositoryTestImpl(), new HashGeneratorImpl());
     @Test
     public void should_return_success_message_on_add_offer() {
         //given

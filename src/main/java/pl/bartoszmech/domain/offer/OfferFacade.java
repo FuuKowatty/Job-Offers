@@ -13,6 +13,7 @@ import java.util.UUID;
 public class OfferFacade {
     OfferValidator validator;
     OfferRepository repository;
+    HashGenerator hashGenerator;
     public InputOfferResultDto createOffer(String title, String company, String salary) {
         if(validator.validate(title, company, salary)) {
             return InputOfferResultDto
@@ -20,7 +21,7 @@ public class OfferFacade {
                     .message("failure")
                     .build();
         }
-        String id = UUID.randomUUID().toString();
+        String id = hashGenerator.getHash();
         LocalDateTime createdAt = LocalDateTime.now();
         Offer savedOffer = repository.save(new Offer(id, title, company, salary, createdAt));
         return InputOfferResultDto
