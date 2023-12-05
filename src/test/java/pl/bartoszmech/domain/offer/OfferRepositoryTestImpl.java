@@ -2,16 +2,27 @@ package pl.bartoszmech.domain.offer;
 
 import pl.bartoszmech.domain.offer.dto.OfferDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class OfferRepositoryTestImpl implements OfferRepository {
     Map<String, Offer> database = new ConcurrentHashMap<>();
 
     @Override
-    public Offer save(Offer offer) {
-        database.put(offer.id(), offer);
+    public Offer save(Offer entity) {
+        String id = UUID.randomUUID().toString();
+        LocalDateTime createdAt = LocalDateTime.now();
+        Offer offer = Offer
+                .builder()
+                .id(id)
+                .title(entity.title())
+                .company(entity.company())
+                .salary(entity.salary())
+                .createdAt(createdAt).build();
+        database.put(id, offer);
         return offer;
     }
 
