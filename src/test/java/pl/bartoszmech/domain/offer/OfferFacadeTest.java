@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import pl.bartoszmech.domain.offer.dto.InputOfferResultDto;
 
 class OfferFacadeTest {
-    OfferFacade offerFacade = new OfferFacade(new OfferValidator(), new OfferRepositoryTestImpl(), new HashGeneratorImpl());
+    OfferFacade configurator = new OfferConfiguration().createForTest(new OfferValidator(), new OfferRepositoryTestImpl(), new HashGeneratorImpl());
     @Test
     public void should_return_success_message_on_add_offer() {
         //given
@@ -15,7 +15,7 @@ class OfferFacadeTest {
         String salary = "0.00 - 1.00 USD";
         String url = "https://example-site.com";
         //when
-        InputOfferResultDto result = offerFacade.createOffer(title, company, salary, url);
+        InputOfferResultDto result = configurator.createOffer(title, company, salary, url);
         //then
         assertThat(result.message()).isEqualTo("success");
     }
@@ -27,7 +27,7 @@ class OfferFacadeTest {
         String salary = "0.00 - 1.00 USD";
         String url = "https://example-site.com";
         //when
-        InputOfferResultDto result = offerFacade.createOffer(title, company, salary, url);
+        InputOfferResultDto result = configurator.createOffer(title, company, salary, url);
         //then
         assertThat(result).isInstanceOf(InputOfferResultDto.class);
         assertThat(result.title()).isEqualTo(title);
@@ -41,7 +41,7 @@ class OfferFacadeTest {
         String salary = "0.00 - 1.00 USD";
         String url = "https://example-site.com";
         //when
-        InputOfferResultDto result = offerFacade.createOffer(title, company, salary, url);
+        InputOfferResultDto result = configurator.createOffer(title, company, salary, url);
         //then
         assertThat(result.message()).isEqualTo("failure");
     }
