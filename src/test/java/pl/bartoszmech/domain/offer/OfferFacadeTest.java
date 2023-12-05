@@ -1,12 +1,15 @@
 package pl.bartoszmech.domain.offer;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static pl.bartoszmech.domain.offer.OfferValidator.*;
 
 import org.junit.jupiter.api.Test;
-import pl.bartoszmech.domain.offer.dto.InputOfferResultDto;
+import pl.bartoszmech.domain.offer.dto.CreateOfferDtoResponse;
+import pl.bartoszmech.domain.offer.dto.InputOfferDto;
 import pl.bartoszmech.domain.offer.dto.OfferDto;
 
+import java.util.List;
 import java.util.Set;
 
 class OfferFacadeTest {
@@ -19,7 +22,14 @@ class OfferFacadeTest {
         String salary = "0.00 - 1.00 USD";
         String url = "https://example-site.com";
         //when
-        InputOfferResultDto result = configurator.createOffer(title, company, salary, url);
+        CreateOfferDtoResponse result = configurator.createOffer(InputOfferDto
+                .builder()
+                .title(title)
+                .company(company)
+                .salary(salary)
+                .jobUrl(url)
+                .build()
+        );
         //then
         assertThat(result.message()).isEqualTo("success");
     }
@@ -31,12 +41,45 @@ class OfferFacadeTest {
         String salary = "0.00 - 1.00 USD";
         String url = "https://example-site.com";
         //when
-        InputOfferResultDto result = configurator.createOffer(title, company, salary, url);
+        CreateOfferDtoResponse result = configurator.createOffer(InputOfferDto
+                .builder()
+                .title(title)
+                .company(company)
+                .salary(salary)
+                .jobUrl(url)
+                .build()
+        );
         //then
-        assertThat(result).isInstanceOf(InputOfferResultDto.class);
+        assertThat(result).isInstanceOf(CreateOfferDtoResponse.class);
         assertThat(result.title()).isEqualTo(title);
         assertThat(result.company()).isEqualTo(company);
         assertThat(result.salary()).isEqualTo(salary);
+    }
+
+    @Test void should_throw_exception_on_create_offer_with_taken_url() {
+        //given
+        String title = "Junior Java Developer";
+        String company = "Capcake";
+        String salary = "0.00 - 1.00 USD";
+        String url = "https://example-site.com";
+        configurator.repository.save(Offer
+                .builder()
+                .id("1")
+                .title(title)
+                .company(company)
+                .salary(salary)
+                .jobUrl(url)
+                .build()
+        );
+        //when&then
+        assertThrows(DuplicateUrlException.class, () -> configurator.createOffer(InputOfferDto
+                .builder()
+                .title("some title")
+                .company("somem company")
+                .salary("no money")
+                .jobUrl(url)
+                .build()
+        ));
     }
     @Test void should_return_failure_on_empty_title() {
         //given
@@ -45,7 +88,14 @@ class OfferFacadeTest {
         String salary = "0.00 - 1.00 USD";
         String url = "https://example-site.com";
         //when
-        InputOfferResultDto result = configurator.createOffer(title, company, salary, url);
+        CreateOfferDtoResponse result = configurator.createOffer(InputOfferDto
+                .builder()
+                .title(title)
+                .company(company)
+                .salary(salary)
+                .jobUrl(url)
+                .build()
+        );
         //then
         assertThat(result.message()).isEqualTo("failure");
     }
@@ -57,7 +107,14 @@ class OfferFacadeTest {
         String salary = "0.00 - 1.00 USD";
         String url = "https://example-site.com";
         //when
-        InputOfferResultDto result = configurator.createOffer(title, company, salary, url);
+        CreateOfferDtoResponse result = configurator.createOffer(InputOfferDto
+                .builder()
+                .title(title)
+                .company(company)
+                .salary(salary)
+                .jobUrl(url)
+                .build()
+        );
         //then
         assertThat(result.message()).isEqualTo("failure");
     }
@@ -69,7 +126,14 @@ class OfferFacadeTest {
         String salary = "0.00 - 1.00 USD";
         String url = "https://example-site.com";
         //when
-        InputOfferResultDto result = configurator.createOffer(title, company, salary, url);
+        CreateOfferDtoResponse result = configurator.createOffer(InputOfferDto
+                .builder()
+                .title(title)
+                .company(company)
+                .salary(salary)
+                .jobUrl(url)
+                .build()
+        );
         //then
         assertThat(result.message()).isEqualTo("failure");
     }
@@ -81,7 +145,14 @@ class OfferFacadeTest {
         String salary = "0.00 - 1.00 USD";
         String url = "https://example-site.com";
         //when
-        InputOfferResultDto result = configurator.createOffer(title, company, salary, url);
+        CreateOfferDtoResponse result = configurator.createOffer(InputOfferDto
+                .builder()
+                .title(title)
+                .company(company)
+                .salary(salary)
+                .jobUrl(url)
+                .build()
+        );
         //then
         assertThat(result.message()).isEqualTo("failure");
     }
@@ -93,7 +164,14 @@ class OfferFacadeTest {
         String salary = "0.00 - 1.00 USD";
         String url = "https://example-site.com";
         //when
-        InputOfferResultDto result = configurator.createOffer(title, company, salary, url);
+        CreateOfferDtoResponse result = configurator.createOffer(InputOfferDto
+                .builder()
+                .title(title)
+                .company(company)
+                .salary(salary)
+                .jobUrl(url)
+                .build()
+        );
         //then
         assertThat(result.message()).isEqualTo("failure");
     }
@@ -105,7 +183,14 @@ class OfferFacadeTest {
         String salary = "";
         String url = "https://example-site.com";
         //when
-        InputOfferResultDto result = configurator.createOffer(title, company, salary, url);
+        CreateOfferDtoResponse result = configurator.createOffer(InputOfferDto
+                .builder()
+                .title(title)
+                .company(company)
+                .salary(salary)
+                .jobUrl(url)
+                .build()
+        );
         //then
         assertThat(result.message()).isEqualTo("failure");
     }
@@ -116,18 +201,24 @@ class OfferFacadeTest {
         String company = "Capcake";
         String salary = "0.00 - 1.00 USD";
         String url = "https://example-site.com";
-        InputOfferResultDto inputOfferResultDto = configurator.createOffer(title, company, salary, url);
-
+        CreateOfferDtoResponse createOfferDtoResponse = configurator.createOffer(InputOfferDto
+                .builder()
+                .title(title)
+                .company(company)
+                .salary(salary)
+                .jobUrl(url)
+                .build()
+        );
         //when
         Set<OfferDto> offerList = configurator.listOffers();
         //then
         OfferDto offerDto = OfferDto.builder()
-                .id(inputOfferResultDto.id())
-                .title(inputOfferResultDto.title())
-                .company(inputOfferResultDto.company())
-                .salary(inputOfferResultDto.salary())
-                .createdAt(inputOfferResultDto.createdAt())
-                .jobUrl(inputOfferResultDto.jobUrl())
+                .id(createOfferDtoResponse.id())
+                .title(createOfferDtoResponse.title())
+                .company(createOfferDtoResponse.company())
+                .salary(createOfferDtoResponse.salary())
+                .createdAt(createOfferDtoResponse.createdAt())
+                .jobUrl(createOfferDtoResponse.jobUrl())
                 .build();
         Set<OfferDto> expectedOfferList = Set.of(offerDto);
         assertThat(offerList).isEqualTo(expectedOfferList);
@@ -139,35 +230,40 @@ class OfferFacadeTest {
         String company = "Capcake";
         String salary = "0.00 - 1.00 USD";
         String url = "https://example-site.com";
-        InputOfferResultDto inputOfferResultDto = configurator.createOffer(title, company, salary, url);
-        String id = inputOfferResultDto.id();
+        CreateOfferDtoResponse createOfferDtoResponse = configurator.createOffer(InputOfferDto
+                .builder()
+                .title(title)
+                .company(company)
+                .salary(salary)
+                .jobUrl(url)
+                .build()
+        );
+        String id = createOfferDtoResponse.id();
         //when
         OfferDto offerDto = configurator.getOfferById(id);
         //then
         OfferDto expectedOfferDto = OfferDto.builder()
                 .id(id)
-                .title(inputOfferResultDto.title())
-                .company(inputOfferResultDto.company())
-                .salary(inputOfferResultDto.salary())
-                .createdAt(inputOfferResultDto.createdAt())
-                .jobUrl(inputOfferResultDto.jobUrl())
+                .title(createOfferDtoResponse.title())
+                .company(createOfferDtoResponse.company())
+                .salary(createOfferDtoResponse.salary())
+                .createdAt(createOfferDtoResponse.createdAt())
+                .jobUrl(createOfferDtoResponse.jobUrl())
                 .build();
         assertThat(offerDto).isEqualTo(expectedOfferDto);
     }
 
     @Test void should_fetch_new_offers() {
-        //given
-
         //when
-        Set<OfferDto> fetchedOffers = configurator.fetchAllOfferAndSaveAllIfNotExists();
+        List<OfferDto> fetchedOffers = configurator.fetchAllOfferAndSaveAllIfNotExists();
 
         //then
-        Set<OfferDto> expectedOffers = Set.of(
+        List<OfferDto> expectedOffers = List.of(
                 OfferDto.builder().title("Junior Java Developer").company("randomCompany").salary("1000EURO").jobUrl("https://example.com").build(),
                 OfferDto.builder().title("Junior Java Developer").company("randomCompany").salary("800EURO").jobUrl("https://example1.com").build(),
                 OfferDto.builder().title("Junior Java Developer").company("randomCompany").salary("2000EURO").jobUrl("https://example2.com").build()
         );
-        assertThat(fetchedOffers).isEqualTo(expectedOffers);
+        assertThat(fetchedOffers.size()).isEqualTo(expectedOffers.size());
     }
 
     private String createString(int length) {

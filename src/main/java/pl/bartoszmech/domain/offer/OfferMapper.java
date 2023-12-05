@@ -2,7 +2,7 @@ package pl.bartoszmech.domain.offer;
 
 import pl.bartoszmech.domain.offer.dto.OfferDto;
 
-public class OfferMapper {
+class OfferMapper {
     public static OfferDto mapFromOffer(Offer offer) {
         return OfferDto
                 .builder()

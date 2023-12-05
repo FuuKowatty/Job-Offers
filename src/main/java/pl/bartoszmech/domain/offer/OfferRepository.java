@@ -1,11 +1,14 @@
 package pl.bartoszmech.domain.offer;
 
-import java.util.List;
+import pl.bartoszmech.domain.offer.dto.OfferDto;
 
-public interface OfferRepository {
+import java.util.List;
+import java.util.Set;
+
+interface OfferRepository {
     Offer save(Offer offer);
     List<Offer> findAll();
     Offer findById(String id);
-    boolean isNotExistsByUrl(String url);
-    void deleteAll();
+    boolean isExistsByUrl(String url);
+    List<Offer> saveAll(List<Offer> offers);
 }
