@@ -28,4 +28,14 @@ public class OfferRepositoryTestImpl implements OfferRepository {
         return database.get(id);
     }
 
+    @Override
+    public boolean isExistsByUrl(String url) {
+        return database
+                .values()
+                .stream()
+                .filter(offer -> offer.jobUrl() == url)
+                .toList()
+                .isEmpty();
+    }
+
 }

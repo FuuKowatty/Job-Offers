@@ -6,6 +6,8 @@ import pl.bartoszmech.domain.offer.dto.OfferDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @AllArgsConstructor
@@ -20,6 +22,14 @@ public class OfferFacade {
                     .message("failure")
                     .build();
         }
+
+        if(repository.isExistsByUrl(url)) {
+            return InputOfferResultDto
+                    .builder()
+                    .message("failure")
+                    .build();
+        }
+
         String id = hashGenerator.getHash();
         LocalDateTime createdAt = LocalDateTime.now();
         Offer savedOffer = repository.save(
@@ -45,12 +55,12 @@ public class OfferFacade {
                 .build();
     }
 
-    public List<OfferDto> listOffers() {
+    public Set<OfferDto> listOffers() {
         List<Offer> offers = repository.findAll();
         return offers
                 .stream()
                 .map(OfferMapper::mapFromOffer)
-                .toList();
+                .collect(Collectors.toSet());
     }
 
     public OfferDto getOfferById(String id) {

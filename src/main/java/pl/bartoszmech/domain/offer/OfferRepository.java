@@ -8,4 +8,5 @@ public interface OfferRepository {
     Offer save(Offer offer);
     List<Offer> findAll();
     Offer findById(String id);
+    boolean isExistsByUrl(String url);
 }
