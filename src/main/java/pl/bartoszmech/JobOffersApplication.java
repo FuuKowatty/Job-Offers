@@ -1,4 +1,4 @@
-package pl.bartoszmech.domain;
+package pl.bartoszmech;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
