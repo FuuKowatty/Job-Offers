@@ -6,7 +6,7 @@ import static pl.bartoszmech.domain.offer.OfferValidator.*;
 
 import org.junit.jupiter.api.Test;
 import pl.bartoszmech.domain.offer.dto.CreateOfferDtoResponse;
-import pl.bartoszmech.domain.offer.dto.InputOfferDto;
+import pl.bartoszmech.domain.offer.dto.OfferApiDto;
 import pl.bartoszmech.domain.offer.dto.OfferDto;
 
 import java.util.List;
@@ -22,7 +22,7 @@ class OfferFacadeTest {
         String salary = "0.00 - 1.00 USD";
         String url = "https://example-site.com";
         //when
-        CreateOfferDtoResponse result = configurator.createOffer(InputOfferDto
+        CreateOfferDtoResponse result = configurator.createOffer(OfferApiDto
                 .builder()
                 .title(title)
                 .company(company)
@@ -41,7 +41,7 @@ class OfferFacadeTest {
         String salary = "0.00 - 1.00 USD";
         String url = "https://example-site.com";
         //when
-        CreateOfferDtoResponse result = configurator.createOffer(InputOfferDto
+        CreateOfferDtoResponse result = configurator.createOffer(OfferApiDto
                 .builder()
                 .title(title)
                 .company(company)
@@ -72,7 +72,7 @@ class OfferFacadeTest {
                 .build()
         );
         //when&then
-        assertThrows(DuplicateUrlException.class, () -> configurator.createOffer(InputOfferDto
+        assertThrows(DuplicateUrlException.class, () -> configurator.createOffer(OfferApiDto
                 .builder()
                 .title("some title")
                 .company("somem company")
@@ -88,7 +88,7 @@ class OfferFacadeTest {
         String salary = "0.00 - 1.00 USD";
         String url = "https://example-site.com";
         //when
-        CreateOfferDtoResponse result = configurator.createOffer(InputOfferDto
+        CreateOfferDtoResponse result = configurator.createOffer(OfferApiDto
                 .builder()
                 .title(title)
                 .company(company)
@@ -107,7 +107,7 @@ class OfferFacadeTest {
         String salary = "0.00 - 1.00 USD";
         String url = "https://example-site.com";
         //when
-        CreateOfferDtoResponse result = configurator.createOffer(InputOfferDto
+        CreateOfferDtoResponse result = configurator.createOffer(OfferApiDto
                 .builder()
                 .title(title)
                 .company(company)
@@ -126,7 +126,7 @@ class OfferFacadeTest {
         String salary = "0.00 - 1.00 USD";
         String url = "https://example-site.com";
         //when
-        CreateOfferDtoResponse result = configurator.createOffer(InputOfferDto
+        CreateOfferDtoResponse result = configurator.createOffer(OfferApiDto
                 .builder()
                 .title(title)
                 .company(company)
@@ -145,7 +145,7 @@ class OfferFacadeTest {
         String salary = "0.00 - 1.00 USD";
         String url = "https://example-site.com";
         //when
-        CreateOfferDtoResponse result = configurator.createOffer(InputOfferDto
+        CreateOfferDtoResponse result = configurator.createOffer(OfferApiDto
                 .builder()
                 .title(title)
                 .company(company)
@@ -164,7 +164,7 @@ class OfferFacadeTest {
         String salary = "0.00 - 1.00 USD";
         String url = "https://example-site.com";
         //when
-        CreateOfferDtoResponse result = configurator.createOffer(InputOfferDto
+        CreateOfferDtoResponse result = configurator.createOffer(OfferApiDto
                 .builder()
                 .title(title)
                 .company(company)
@@ -183,7 +183,7 @@ class OfferFacadeTest {
         String salary = "";
         String url = "https://example-site.com";
         //when
-        CreateOfferDtoResponse result = configurator.createOffer(InputOfferDto
+        CreateOfferDtoResponse result = configurator.createOffer(OfferApiDto
                 .builder()
                 .title(title)
                 .company(company)
@@ -201,7 +201,7 @@ class OfferFacadeTest {
         String company = "Capcake";
         String salary = "0.00 - 1.00 USD";
         String url = "https://example-site.com";
-        CreateOfferDtoResponse createOfferDtoResponse = configurator.createOffer(InputOfferDto
+        CreateOfferDtoResponse createOfferDtoResponse = configurator.createOffer(OfferApiDto
                 .builder()
                 .title(title)
                 .company(company)
@@ -230,7 +230,7 @@ class OfferFacadeTest {
         String company = "Capcake";
         String salary = "0.00 - 1.00 USD";
         String url = "https://example-site.com";
-        CreateOfferDtoResponse createOfferDtoResponse = configurator.createOffer(InputOfferDto
+        CreateOfferDtoResponse createOfferDtoResponse = configurator.createOffer(OfferApiDto
                 .builder()
                 .title(title)
                 .company(company)
