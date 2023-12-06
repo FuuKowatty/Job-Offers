@@ -1,5 +1,6 @@
 package pl.bartoszmech.domain.offer;
 
+import pl.bartoszmech.domain.offer.dto.OfferApiDto;
 import pl.bartoszmech.domain.offer.dto.OfferDto;
 
 class OfferMapper {
@@ -24,6 +25,16 @@ class OfferMapper {
                 .salary(offer.salary())
                 .jobUrl(offer.jobUrl())
                 .createdAt(offer.createdAt())
+                .build();
+    }
+
+    public static Offer mapToOfferWithoutId(OfferApiDto offer) {
+        return  Offer
+                .builder()
+                .title(offer.title())
+                .company(offer.company())
+                .salary(offer.salary())
+                .jobUrl(offer.jobUrl())
                 .build();
     }
 }

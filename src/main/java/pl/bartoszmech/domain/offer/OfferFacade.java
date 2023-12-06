@@ -2,7 +2,7 @@ package pl.bartoszmech.domain.offer;
 
 import lombok.AllArgsConstructor;
 import pl.bartoszmech.domain.offer.dto.CreateOfferDtoResponse;
-import pl.bartoszmech.domain.offer.dto.InputOfferDto;
+import pl.bartoszmech.domain.offer.dto.OfferApiDto;
 import pl.bartoszmech.domain.offer.dto.OfferDto;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public class OfferFacade {
     OfferValidator validator;
     OfferRepository repository;
     OfferFetcher fetcher;
-    public CreateOfferDtoResponse createOffer(InputOfferDto offerDto) {
+    public CreateOfferDtoResponse createOffer(OfferApiDto offerDto) {
         String title = offerDto.title();
         String company = offerDto.company();
         String salary = offerDto.salary();
@@ -68,10 +68,10 @@ public class OfferFacade {
     }
 
     public List<OfferDto> fetchAllOfferAndSaveAllIfNotExists() {
-        List<OfferDto> fetchedOffersDto = fetcher.fetch();
+        List<OfferApiDto> fetchedOffersDto = fetcher.handleFetchOffers();
         List<Offer> fetchedOffers = fetchedOffersDto
                 .stream()
-                .map(offerDto -> OfferMapper.mapToOffer(offerDto))
+                .map(offerDto -> OfferMapper.mapToOfferWithoutId(offerDto))
                 .toList();
 
         List<Offer> notExistingInDatabaseOffers = filterNotExistingOffers(fetchedOffers);
