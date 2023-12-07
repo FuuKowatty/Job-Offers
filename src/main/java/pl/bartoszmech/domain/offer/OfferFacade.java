@@ -2,39 +2,23 @@ package pl.bartoszmech.domain.offer;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import pl.bartoszmech.domain.offer.dto.CreateOfferDtoResponse;
-import pl.bartoszmech.domain.offer.dto.OfferApiDto;
-import pl.bartoszmech.domain.offer.dto.OfferDto;
+import pl.bartoszmech.domain.offer.dto.OfferRequest;
+import pl.bartoszmech.domain.offer.dto.OfferResponse;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @AllArgsConstructor
 @Log4j2
 public class OfferFacade {
-    public static final String FAILURE = "failure";
-    public static final String SUCCESS = "success";
-
-    OfferValidator validator;
     OfferRepository repository;
     OfferFetcher fetcher;
-    public OfferDto createOffer(OfferApiDto offerDto) {
+    public OfferResponse createOffer(OfferRequest offerDto) {
         String title = offerDto.title();
         String company = offerDto.company();
         String salary = offerDto.salary();
         String url = offerDto.jobUrl();
 
-//        if(validator.validate(title, company, salary)) {
-//            return CreateOfferDtoResponse
-//                    .builder()
-//                    .message(FAILURE)
-//                    .build();
-//        }
-//        if(repository.existsByJobUrl(url)) {
-//            throw new DuplicateUrlException(url);
-//        }
         Offer savedOffer = repository.save(
                 Offer.builder()
                         .title(title)
@@ -46,23 +30,22 @@ public class OfferFacade {
         return OfferMapper.mapFromOffer(savedOffer);
     }
 
-    public Set<OfferDto> listOffers() {
+    public List<OfferResponse> listOffers() {
         List<Offer> offers = repository.findAll();
         return offers
                 .stream()
                 .map(OfferMapper::mapFromOffer)
-                .collect(Collectors.toSet());
+                .toList();
     }
 
-    public OfferDto getOfferById(String id) {
+    public OfferResponse getOfferById(String id) {
         Offer offer = repository.findById(id).orElseThrow(() -> new OfferNotFoundException(id));
-        OfferDto userDto = OfferMapper.mapFromOffer(offer);
-        return userDto;
+        return OfferMapper.mapFromOffer(offer);
     }
 
-    public List<OfferDto> fetchAllOfferAndSaveAllIfNotExists() {
+    public List<OfferResponse> fetchAllOfferAndSaveAllIfNotExists() {
         log.info("Starting fetch offers...");
-        List<OfferApiDto> fetchedOffersDto = fetcher.handleFetchOffers();
+        List<OfferRequest> fetchedOffersDto = fetcher.handleFetchOffers();
         log.info("Offers fetched successfully");
         List<Offer> fetchedOffers = fetchedOffersDto
                 .stream()

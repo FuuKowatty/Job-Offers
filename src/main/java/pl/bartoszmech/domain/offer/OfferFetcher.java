@@ -1,11 +1,9 @@
 package pl.bartoszmech.domain.offer;
 
-import pl.bartoszmech.domain.offer.dto.OfferApiDto;
-import pl.bartoszmech.domain.offer.dto.OfferDto;
+import pl.bartoszmech.domain.offer.dto.OfferRequest;
 
 import java.util.List;
-import java.util.Set;
 
 public interface OfferFetcher {
-    List<OfferApiDto>  handleFetchOffers();
+    List<OfferRequest> handleFetchOffers();
 }

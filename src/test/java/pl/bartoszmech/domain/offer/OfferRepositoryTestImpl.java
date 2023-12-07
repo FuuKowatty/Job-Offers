@@ -1,11 +1,11 @@
 package pl.bartoszmech.domain.offer;
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
-import pl.bartoszmech.domain.offer.dto.OfferDto;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -18,7 +18,7 @@ public class OfferRepositoryTestImpl implements OfferRepository {
     @Override
     public Offer save(Offer entity) {
         if(database.values().stream().anyMatch(offer -> entity.jobUrl().equals(offer.jobUrl()))) {
-            throw new DuplicateUrlException(entity.jobUrl());
+            throw new DuplicateKeyException(entity.jobUrl());
         }
 
         String id = UUID.randomUUID().toString();
