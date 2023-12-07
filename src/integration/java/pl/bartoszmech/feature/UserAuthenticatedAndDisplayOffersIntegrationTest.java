@@ -76,7 +76,7 @@ public class UserAuthenticatedAndDisplayOffersIntegrationTest extends BaseIntegr
                             .content(bodyWithOneOfferJson())
                             .contentType(APPLICATION_JSON_VALUE))
             //then
-                    .andExpect(status().isOk())
+                    .andExpect(status().isCreated())
                     .andReturn();
             String json = response.getResponse().getContentAsString();
             OfferDto offer = objectMapper.readValue(json, OfferDto.class);
@@ -92,4 +92,9 @@ public class UserAuthenticatedAndDisplayOffersIntegrationTest extends BaseIntegr
             throw new RuntimeException();
         }
     }
+
+
+//step17 Check if added offer exists
+
+
 }

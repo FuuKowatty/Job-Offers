@@ -46,12 +46,12 @@ public class OfferFacade {
         return OfferMapper.mapFromOffer(savedOffer);
     }
 
-    public Set<OfferDto> listOffers() {
+    public List<OfferDto> listOffers() {
         List<Offer> offers = repository.findAll();
         return offers
                 .stream()
                 .map(OfferMapper::mapFromOffer)
-                .collect(Collectors.toSet());
+                .toList();
     }
 
     public OfferDto getOfferById(String id) {
