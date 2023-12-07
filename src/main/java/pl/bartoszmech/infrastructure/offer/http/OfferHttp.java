@@ -8,7 +8,7 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import pl.bartoszmech.domain.offer.OfferFetcher;
-import pl.bartoszmech.domain.offer.dto.OfferApiDto;
+import pl.bartoszmech.domain.offer.dto.OfferRequest;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,10 +22,10 @@ public class OfferHttp implements OfferFetcher {
     int port;
 
     @Override
-    public List<OfferApiDto> handleFetchOffers() {
+    public List<OfferRequest> handleFetchOffers() {
         final HttpEntity<HttpHeaders> requestEntity = new HttpEntity<>(createHeader());
         try {
-            List<OfferApiDto> fetchedOffers = fetchOffers(requestEntity);
+            List<OfferRequest> fetchedOffers = fetchOffers(requestEntity);
             if(fetchedOffers == null) {
                 log.error("Response body was null.");
                 return Collections.emptyList();
@@ -37,8 +37,8 @@ public class OfferHttp implements OfferFetcher {
         }
     }
 
-    private List<OfferApiDto> fetchOffers(HttpEntity<HttpHeaders> requestEntity) {
-        ResponseEntity<List<OfferApiDto>> response = restTemplate.exchange(
+    private List<OfferRequest> fetchOffers(HttpEntity<HttpHeaders> requestEntity) {
+        ResponseEntity<List<OfferRequest>> response = restTemplate.exchange(
                 createUrl(),
                 HttpMethod.GET,
                 requestEntity,
