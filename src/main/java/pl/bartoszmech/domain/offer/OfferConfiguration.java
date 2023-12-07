@@ -8,11 +8,10 @@ public class OfferConfiguration {
 
     @Bean
     OfferFacade offerFacade(OfferRepository repository, OfferFetcher fetcher) {
-        OfferValidator validator = new OfferValidator();
-        return new OfferFacade(validator, repository, fetcher);
+        return new OfferFacade(repository, fetcher);
     }
 
-    OfferFacade createForTests(OfferValidator validator, OfferRepository repository, OfferFetcher fetcher) {
+    OfferFacade createForTests(OfferRepository repository, OfferFetcher fetcher) {
         return offerFacade(repository, fetcher);
     }
 }
