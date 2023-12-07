@@ -1,20 +1,17 @@
 package pl.bartoszmech.feature;
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import pl.bartoszmech.BaseIntegrationTest;
-import pl.bartoszmech.domain.offer.dto.OfferApiDto;
-import pl.bartoszmech.domain.offer.dto.OfferDto;
+import pl.bartoszmech.domain.offer.dto.OfferResponse;
 import pl.bartoszmech.infrastructure.SampleApiBody;
 import pl.bartoszmech.infrastructure.offer.scheduler.OfferHttpScheduler;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,7 +37,7 @@ public class UserAuthenticatedAndDisplayOffersIntegrationTest extends BaseIntegr
 
 //step 2: scheduler ran 1st time and made GET request to external server and system added 0 offers to database
         //given&when
-        List<OfferDto> offers = scheduler.fetchAllOfferAndSaveAllIfNotExists();
+        List<OfferResponse> offers = scheduler.fetchAllOfferAndSaveAllIfNotExists();
         //then
         assertThat(offers).isEmpty();
 
@@ -70,31 +67,28 @@ public class UserAuthenticatedAndDisplayOffersIntegrationTest extends BaseIntegr
 
 
 //step 16 Make POST /offers and system returned OK(200) with my new offer
-        try {
             //given&when
-            MvcResult response = mockMvc.perform(post("/offers")
+            MvcResult responseFromCreateOffers = mockMvc.perform(post("/offers")
                             .content(bodyWithOneOfferJson())
                             .contentType(APPLICATION_JSON_VALUE))
             //then
                     .andExpect(status().isCreated())
                     .andReturn();
-            String json = response.getResponse().getContentAsString();
-            OfferDto offer = objectMapper.readValue(json, OfferDto.class);
+            String jsonFromCreateOffers = responseFromCreateOffers.getResponse().getContentAsString();
+            OfferResponse createdOffers = objectMapper.readValue(jsonFromCreateOffers, new TypeReference<>() {});
 
-            assertThat(offer.id()).isNotNull();
-        }
-        catch (UnsupportedEncodingException e) {
-            log.error("Invalid JSON Format with message: " + e.getMessage());
-            throw new RuntimeException();
-        }
-        catch (Exception e) {
-            log.error("Threw exception during perform POST /offers with message: " + e.getMessage());
-            throw new RuntimeException();
-        }
-    }
+            assertThat(createdOffers.id()).isNotNull();
 
 
 //step17 Check if added offer exists
-
-
+            //given&when
+            MvcResult responseFromListOffers = mockMvc.perform(get("/offers")
+                            .contentType(APPLICATION_JSON_VALUE))
+            //then
+                    .andExpect(status().isOk())
+                    .andReturn();
+            String jsonFromListOffers = responseFromListOffers.getResponse().getContentAsString();
+            List<OfferResponse> listOffers = objectMapper.readValue(jsonFromListOffers, new TypeReference<>() {});
+            assertThat(listOffers).hasSize(1);
+    }
 }
