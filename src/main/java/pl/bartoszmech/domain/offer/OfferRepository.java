@@ -1,10 +1,12 @@
 package pl.bartoszmech.domain.offer;
 
+import org.springframework.stereotype.Repository;
 import pl.bartoszmech.domain.offer.dto.OfferDto;
 
 import java.util.List;
 import java.util.Set;
 
+@Repository
 interface OfferRepository {
     Offer save(Offer offer);
     List<Offer> findAll();

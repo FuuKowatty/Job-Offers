@@ -5,15 +5,16 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.bartoszmech.BaseIntegrationTest;
-import pl.bartoszmech.domain.offer.OfferFetcher;
-import pl.bartoszmech.domain.offer.dto.OfferApiDto;
 import pl.bartoszmech.infrastructure.SampleJobOfferResponse;
+import pl.bartoszmech.infrastructure.offer.scheduler.OfferHttpScheduler;
 
-import java.util.List;
+import java.time.Duration;
+
+import static org.awaitility.Awaitility.await;
 
 public class UserAuthenticatedAndDisplayOffersIntegrationTest extends BaseIntegrationTest implements SampleJobOfferResponse {
     @Autowired
-    OfferFetcher offerFetcher;
+    OfferHttpScheduler scheduler;
     @Test
     public void should_be_authenticated_to_display_offer() {
     //step 1: there are no offers in external HTTP server
@@ -23,8 +24,8 @@ public class UserAuthenticatedAndDisplayOffersIntegrationTest extends BaseIntegr
                         .withHeader("Content-Type", "application/json")
                         .withBody(bodyWithZeroOffersJson())));
 
-        List<OfferApiDto> offers = offerFetcher.handleFetchOffers();
-//step 2: scheduler ran 1st time and made GET to external server and system added 0 offers to database
+//step 2: scheduler ran 1st time and made GET request to external server and system added 0 offers to database
+        scheduler.fetchAllOfferAndSaveAllIfNotExists();
 //step 3: user tried to get JWT token by requesting POST /token with username=someUser, password=somePassword and system returned UNAUTHORIZED(401)
 //step 4: user made GET /offers with no jwt token and system returned UNAUTHORIZED(401)
 //step 5: user made POST /register with username=someUser, password=somePassword and system registered user with status OK(200)

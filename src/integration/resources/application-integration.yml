@@ -1,0 +1,6 @@
+api:
+  offer:
+    http:
+      schedule:
+        time: PT1S
+        enabled: false
