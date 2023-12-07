@@ -1,16 +1,11 @@
 package pl.bartoszmech.domain.offer;
 
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-import pl.bartoszmech.domain.offer.dto.OfferDto;
 
 import java.util.List;
-import java.util.Set;
 
 @Repository
-interface OfferRepository {
-    Offer save(Offer offer);
-    List<Offer> findAll();
-    Offer findById(String id);
-    boolean isExistsByUrl(String url);
-    List<Offer> saveAll(List<Offer> offers);
+interface OfferRepository extends MongoRepository<Offer, String> {
+    boolean existsByJobUrl(String url);
 }

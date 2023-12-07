@@ -32,7 +32,7 @@ public class OfferFacade {
                     .message(FAILURE)
                     .build();
         }
-        if(repository.isExistsByUrl(url)) {
+        if(repository.existsByJobUrl(url)) {
             throw new DuplicateUrlException(url);
         }
         Offer savedOffer = repository.save(
@@ -65,7 +65,8 @@ public class OfferFacade {
     }
 
     public OfferDto getOfferById(String id) {
-        OfferDto userDto = OfferMapper.mapFromOffer(repository.findById(id));
+        Offer offer = repository.findById(id).orElseThrow(() -> new OfferNotFoundException(id));
+        OfferDto userDto = OfferMapper.mapFromOffer(offer);
         return userDto;
     }
 
@@ -80,18 +81,20 @@ public class OfferFacade {
 
         List<Offer> notExistingInDatabaseOffers = filterNotExistingOffers(fetchedOffers);
         log.info("Adding non existing offers to database...");
-        return repository
+        repository
                 .saveAll(notExistingInDatabaseOffers)
                 .stream()
                 .map(offer -> OfferMapper.mapFromOffer(offer))
                 .toList();
+        log.info("Offers successfully saved in database!");
+        return notExistingInDatabaseOffers.stream().map(offer -> OfferMapper.mapFromOffer(offer)).toList();
     }
 
     private List<Offer> filterNotExistingOffers(List<Offer> fetchedOffers) {
         return fetchedOffers
                 .stream()
                 .filter(offer -> !offer.jobUrl().isBlank())
-                .filter(offer -> !repository.isExistsByUrl(offer.jobUrl()))
+                .filter(offer -> !repository.existsByJobUrl(offer.jobUrl()))
                 .toList();
     }
 }

@@ -1,7 +1,7 @@
 package pl.bartoszmech.domain.accountidentifier;
 
 class UserNotFoundException extends RuntimeException {
-    UserNotFoundException(String message) {
-        super(message);
+    UserNotFoundException(String username) {
+        super("Offer cannot be found with username: " + username);
     }
 }

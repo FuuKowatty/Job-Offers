@@ -254,7 +254,7 @@ class OfferFacadeTest {
     }
 
     @Test void should_fetch_new_offers() {
-        //when
+        //given&when
         List<OfferDto> fetchedOffers = configurator.fetchAllOfferAndSaveAllIfNotExists();
 
         //then

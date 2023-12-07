@@ -1,11 +1,13 @@
 package pl.bartoszmech.domain.offer;
 
 import lombok.Builder;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Builder
+@Document
 record Offer(String id, String title, String company, String salary, LocalDateTime createdAt, String jobUrl) {
     @Override
     public boolean equals(Object o) {
