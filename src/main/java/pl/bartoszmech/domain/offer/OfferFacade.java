@@ -20,21 +20,21 @@ public class OfferFacade {
     OfferValidator validator;
     OfferRepository repository;
     OfferFetcher fetcher;
-    public CreateOfferDtoResponse createOffer(OfferApiDto offerDto) {
+    public OfferDto createOffer(OfferApiDto offerDto) {
         String title = offerDto.title();
         String company = offerDto.company();
         String salary = offerDto.salary();
         String url = offerDto.jobUrl();
 
-        if(validator.validate(title, company, salary)) {
-            return CreateOfferDtoResponse
-                    .builder()
-                    .message(FAILURE)
-                    .build();
-        }
-        if(repository.isExistsByUrl(url)) {
-            throw new DuplicateUrlException(url);
-        }
+//        if(validator.validate(title, company, salary)) {
+//            return CreateOfferDtoResponse
+//                    .builder()
+//                    .message(FAILURE)
+//                    .build();
+//        }
+//        if(repository.existsByJobUrl(url)) {
+//            throw new DuplicateUrlException(url);
+//        }
         Offer savedOffer = repository.save(
                 Offer.builder()
                         .title(title)
@@ -43,17 +43,7 @@ public class OfferFacade {
                         .jobUrl(url)
                         .build()
         );
-
-        return CreateOfferDtoResponse
-                .builder()
-                .message(SUCCESS)
-                .id(savedOffer.id())
-                .title(savedOffer.title())
-                .company(savedOffer.company())
-                .salary(savedOffer.salary())
-                .createdAt(savedOffer.createdAt())
-                .jobUrl(savedOffer.jobUrl())
-                .build();
+        return OfferMapper.mapFromOffer(savedOffer);
     }
 
     public Set<OfferDto> listOffers() {
@@ -65,7 +55,8 @@ public class OfferFacade {
     }
 
     public OfferDto getOfferById(String id) {
-        OfferDto userDto = OfferMapper.mapFromOffer(repository.findById(id));
+        Offer offer = repository.findById(id).orElseThrow(() -> new OfferNotFoundException(id));
+        OfferDto userDto = OfferMapper.mapFromOffer(offer);
         return userDto;
     }
 
@@ -80,18 +71,20 @@ public class OfferFacade {
 
         List<Offer> notExistingInDatabaseOffers = filterNotExistingOffers(fetchedOffers);
         log.info("Adding non existing offers to database...");
-        return repository
+        repository
                 .saveAll(notExistingInDatabaseOffers)
                 .stream()
                 .map(offer -> OfferMapper.mapFromOffer(offer))
                 .toList();
+        log.info("Offers successfully saved in database!");
+        return notExistingInDatabaseOffers.stream().map(offer -> OfferMapper.mapFromOffer(offer)).toList();
     }
 
     private List<Offer> filterNotExistingOffers(List<Offer> fetchedOffers) {
         return fetchedOffers
                 .stream()
                 .filter(offer -> !offer.jobUrl().isBlank())
-                .filter(offer -> !repository.isExistsByUrl(offer.jobUrl()))
+                .filter(offer -> !repository.existsByJobUrl(offer.jobUrl()))
                 .toList();
     }
 }

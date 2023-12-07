@@ -2,5 +2,5 @@ api:
   offer:
     http:
       schedule:
-        time: PT1S
+        time: "*/1 * * * * *"
         enabled: false

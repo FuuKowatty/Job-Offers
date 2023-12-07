@@ -2,15 +2,15 @@ spring:
   data:
     mongodb:
       auto-index-creation: true
-      uri: mongodb://admin:admin@localhost:27017/offers
+      uri: mongodb://admin:admin@localhost:27017/offer
 api:
   offer:
     http:
       config:
-        port: 5057,
-        uri: http://ec2-3-120-147-150.eu-central-1.compute.amazonaws.com:5057/offers,
+        port: 5057
+        uri: http://ec2-3-120-147-150.eu-central-1.compute.amazonaws.com
         connectionTimeout: 1000
         readTimeout: 1000
       schedule:
-        time: PT3H
+        time: "0 0 */3 * * *"
         enabled: true
