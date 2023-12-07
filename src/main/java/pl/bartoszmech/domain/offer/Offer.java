@@ -1,14 +1,25 @@
 package pl.bartoszmech.domain.offer;
 
 import lombok.Builder;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Builder
-@Document
-record Offer(String id, String title, String company, String salary, LocalDateTime createdAt, String jobUrl) {
+@Document("offers")
+record Offer(
+        @Id String id,
+        String title,
+        String company,
+        String salary,
+        @CreatedDate @Field("created_at") LocalDateTime createdAt,
+        @Field("url") @Indexed(unique = true) String jobUrl) {
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,6 +1,6 @@
 package pl.bartoszmech.infrastructure;
 
-public interface SampleJobOfferResponse {
+public interface SampleApiBody {
 
     default String bodyWithTwoOffersJson() {
         return """
@@ -23,14 +23,12 @@ public interface SampleJobOfferResponse {
 
     default String bodyWithOneOfferJson() {
         return """
-                [
                 {
                     "title": "Software Engineer - Mobile (m/f/d)",
                     "company": "Cybersource",
                     "salary": "4k - 8k PLN",
                     "offerUrl": "https://nofluffjobs.com/pl/job/software-engineer-mobile-m-f-d-cybersource-poznan-entavdpn"
-                }
-                ]
+                }  
                 """.trim();
     }
 
@@ -62,6 +60,15 @@ public interface SampleJobOfferResponse {
                 "offerUrl": "https://nofluffjobs.com/pl/job/junior-full-stack-developer-vertabelo-remote-k7m9xpnm"
                 }
                 ]
+                """.trim();
+    }
+
+    default String bodyOfUsernameAndPassword    () {
+        return """
+                {
+                    "username": "someUser",
+                    "password": "somePassword"
+                }
                 """.trim();
     }
 

@@ -20,21 +20,21 @@ public class OfferFacade {
     OfferValidator validator;
     OfferRepository repository;
     OfferFetcher fetcher;
-    public CreateOfferDtoResponse createOffer(OfferApiDto offerDto) {
+    public OfferDto createOffer(OfferApiDto offerDto) {
         String title = offerDto.title();
         String company = offerDto.company();
         String salary = offerDto.salary();
         String url = offerDto.jobUrl();
 
-        if(validator.validate(title, company, salary)) {
-            return CreateOfferDtoResponse
-                    .builder()
-                    .message(FAILURE)
-                    .build();
-        }
-        if(repository.existsByJobUrl(url)) {
-            throw new DuplicateUrlException(url);
-        }
+//        if(validator.validate(title, company, salary)) {
+//            return CreateOfferDtoResponse
+//                    .builder()
+//                    .message(FAILURE)
+//                    .build();
+//        }
+//        if(repository.existsByJobUrl(url)) {
+//            throw new DuplicateUrlException(url);
+//        }
         Offer savedOffer = repository.save(
                 Offer.builder()
                         .title(title)
@@ -43,17 +43,7 @@ public class OfferFacade {
                         .jobUrl(url)
                         .build()
         );
-
-        return CreateOfferDtoResponse
-                .builder()
-                .message(SUCCESS)
-                .id(savedOffer.id())
-                .title(savedOffer.title())
-                .company(savedOffer.company())
-                .salary(savedOffer.salary())
-                .createdAt(savedOffer.createdAt())
-                .jobUrl(savedOffer.jobUrl())
-                .build();
+        return OfferMapper.mapFromOffer(savedOffer);
     }
 
     public Set<OfferDto> listOffers() {
