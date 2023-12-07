@@ -15,7 +15,7 @@ import java.time.Duration;
 
 import static org.awaitility.Awaitility.await;
 
-@SpringBootTest(classes = JobOffersApplication.class, properties = "scheduling.enabled=true")
+@SpringBootTest(classes = JobOffersApplication.class, properties = "api.offer.http.schedule.enabled=true")
 public class OfferHttpSchedulerIntegrationTest extends BaseIntegrationTest {
     @SpyBean
     OfferFetcher offerHttp;

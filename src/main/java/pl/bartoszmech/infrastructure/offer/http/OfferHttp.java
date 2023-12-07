@@ -13,6 +13,8 @@ import pl.bartoszmech.domain.offer.dto.OfferRequest;
 import java.util.Collections;
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+
 @AllArgsConstructor
 @Log4j2
 public class OfferHttp implements OfferFetcher {
@@ -49,7 +51,7 @@ public class OfferHttp implements OfferFetcher {
 
     private HttpHeaders createHeader() {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setContentType(APPLICATION_JSON);
         return headers;
     }
     private String createUrl() {
