@@ -76,8 +76,4 @@ class OfferFacadeTest {
         );
         assertThat(fetchedOffers.size()).isEqualTo(expectedOffers.size());
     }
-
-    private String createString(int length) {
-        return "x".repeat(length);
-    }
 }

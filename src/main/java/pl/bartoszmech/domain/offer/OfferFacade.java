@@ -11,9 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @Log4j2
 public class OfferFacade {
-    public static final String FAILURE = "failure";
-    public static final String SUCCESS = "success";
-
     OfferRepository repository;
     OfferFetcher fetcher;
     public OfferResponse createOffer(OfferRequest offerDto) {
@@ -43,8 +40,7 @@ public class OfferFacade {
 
     public OfferResponse getOfferById(String id) {
         Offer offer = repository.findById(id).orElseThrow(() -> new OfferNotFoundException(id));
-        OfferResponse userDto = OfferMapper.mapFromOffer(offer);
-        return userDto;
+        return OfferMapper.mapFromOffer(offer);
     }
 
     public List<OfferResponse> fetchAllOfferAndSaveAllIfNotExists() {
