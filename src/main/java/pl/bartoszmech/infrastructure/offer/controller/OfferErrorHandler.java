@@ -13,7 +13,7 @@ import pl.bartoszmech.domain.offer.OfferNotFoundException;
 public class OfferErrorHandler {
     @ExceptionHandler(OfferNotFoundException.class)
     @ResponseBody
-    public ResponseEntity<OfferNotFoundErrorResponse> f(OfferNotFoundException e) {
+    public ResponseEntity<OfferNotFoundErrorResponse> handleOfferNotFoundError(OfferNotFoundException e) {
        String message = e.getMessage();
        log.error("OfferNotFoundException with message " + message);
        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new OfferNotFoundErrorResponse(message)
