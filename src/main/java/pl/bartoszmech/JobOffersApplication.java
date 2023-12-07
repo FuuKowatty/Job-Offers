@@ -6,7 +6,6 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableMongoRepositories
 public class JobOffersApplication {
     public static void main(String[] args) {
         SpringApplication.run(JobOffersApplication.class, args);
