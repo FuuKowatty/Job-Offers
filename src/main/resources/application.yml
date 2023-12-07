@@ -13,3 +13,4 @@ api:
         readTimeout: 1000
       schedule:
         time: PT3H
+        enabled: true

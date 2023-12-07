@@ -3,3 +3,4 @@ api:
     http:
       schedule:
         time: PT1S
+        enabled: false
