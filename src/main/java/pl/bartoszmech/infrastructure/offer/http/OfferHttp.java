@@ -23,7 +23,6 @@ public class OfferHttp implements OfferFetcher {
 
     @Override
     public List<OfferApiDto> handleFetchOffers() {
-        log.info("START FETCHING");
         final HttpEntity<HttpHeaders> requestEntity = new HttpEntity<>(createHeader());
         try {
             List<OfferApiDto> fetchedOffers = fetchOffers(requestEntity);

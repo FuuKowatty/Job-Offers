@@ -1,0 +1,5 @@
+api:
+  offer:
+    http:
+      schedule:
+        time: PT1S

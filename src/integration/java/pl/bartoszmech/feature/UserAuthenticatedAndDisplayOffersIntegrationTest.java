@@ -9,7 +9,10 @@ import pl.bartoszmech.domain.offer.OfferFetcher;
 import pl.bartoszmech.domain.offer.dto.OfferApiDto;
 import pl.bartoszmech.infrastructure.SampleJobOfferResponse;
 
+import java.time.Duration;
 import java.util.List;
+
+import static org.awaitility.Awaitility.await;
 
 public class UserAuthenticatedAndDisplayOffersIntegrationTest extends BaseIntegrationTest implements SampleJobOfferResponse {
     @Autowired
@@ -23,7 +26,17 @@ public class UserAuthenticatedAndDisplayOffersIntegrationTest extends BaseIntegr
                         .withHeader("Content-Type", "application/json")
                         .withBody(bodyWithZeroOffersJson())));
 
-        List<OfferApiDto> offers = offerFetcher.handleFetchOffers();
+//        await()
+//                .atMost(Duration.ofSeconds(20))
+//                .pollInterval(Duration.ofSeconds(1))
+//                .until(() -> {
+//                            try {
+//                                return ;
+//                            } catch () {
+//                                return false;
+//                            }
+//                        }
+//                );
 //step 2: scheduler ran 1st time and made GET to external server and system added 0 offers to database
 //step 3: user tried to get JWT token by requesting POST /token with username=someUser, password=somePassword and system returned UNAUTHORIZED(401)
 //step 4: user made GET /offers with no jwt token and system returned UNAUTHORIZED(401)

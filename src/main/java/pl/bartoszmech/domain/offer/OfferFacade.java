@@ -1,6 +1,7 @@
 package pl.bartoszmech.domain.offer;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import pl.bartoszmech.domain.offer.dto.CreateOfferDtoResponse;
 import pl.bartoszmech.domain.offer.dto.OfferApiDto;
 import pl.bartoszmech.domain.offer.dto.OfferDto;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 
 
 @AllArgsConstructor
+@Log4j2
 public class OfferFacade {
     public static final String FAILURE = "failure";
     public static final String SUCCESS = "success";
@@ -68,13 +70,16 @@ public class OfferFacade {
     }
 
     public List<OfferDto> fetchAllOfferAndSaveAllIfNotExists() {
+        log.info("Starting fetch offers...");
         List<OfferApiDto> fetchedOffersDto = fetcher.handleFetchOffers();
+        log.info("Offers fetched successfully");
         List<Offer> fetchedOffers = fetchedOffersDto
                 .stream()
                 .map(offerDto -> OfferMapper.mapToOfferWithoutId(offerDto))
                 .toList();
 
         List<Offer> notExistingInDatabaseOffers = filterNotExistingOffers(fetchedOffers);
+        log.info("Adding non existing offers to database...");
         return repository
                 .saveAll(notExistingInDatabaseOffers)
                 .stream()
