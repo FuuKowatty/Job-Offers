@@ -6,7 +6,12 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MvcResult;
+import org.testcontainers.containers.MongoDBContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.utility.DockerImageName;
 import pl.bartoszmech.BaseIntegrationTest;
 import pl.bartoszmech.domain.offer.dto.OfferResponse;
 import pl.bartoszmech.infrastructure.SampleApiBody;
@@ -25,6 +30,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserAuthenticatedAndDisplayOffersIntegrationTest extends BaseIntegrationTest implements SampleApiBody {
     @Autowired
     OfferHttpScheduler scheduler;
+    @Container
+    public static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
+
+    @DynamicPropertySource
+    public static void propertyOverride(DynamicPropertyRegistry registry) {
+        registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
+    }
+
     @Test
     public void should_be_authenticated_to_display_offer() throws Exception {
     //step 1: there are no offers in external HTTP server
