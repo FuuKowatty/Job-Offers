@@ -47,6 +47,7 @@ public class OfferFacade {
     public List<OfferResponse> fetchAllOfferAndSaveAllIfNotExists() {
         log.info("Starting fetch offers...");
         List<OfferRequest> fetchedOffersDto = fetcher.handleFetchOffers();
+
         log.info("Offers fetched successfully");
         List<Offer> fetchedOffers = fetchedOffersDto
                 .stream()

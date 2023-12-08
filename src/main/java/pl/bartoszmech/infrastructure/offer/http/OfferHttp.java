@@ -6,6 +6,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 import pl.bartoszmech.domain.offer.OfferFetcher;
 import pl.bartoszmech.domain.offer.dto.OfferRequest;
@@ -13,6 +14,7 @@ import pl.bartoszmech.domain.offer.dto.OfferRequest;
 import java.util.Collections;
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @AllArgsConstructor
@@ -30,12 +32,12 @@ public class OfferHttp implements OfferFetcher {
             List<OfferRequest> fetchedOffers = fetchOffers(requestEntity);
             if(fetchedOffers == null) {
                 log.error("Response body was null.");
-                return Collections.emptyList();
+                throw new ResponseStatusException(NO_CONTENT);
             }
             return fetchedOffers;
         } catch (ResourceAccessException e) {
             log.error("Error while fetching offers");
-            return Collections.emptyList();
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR);
         }
     }
 
