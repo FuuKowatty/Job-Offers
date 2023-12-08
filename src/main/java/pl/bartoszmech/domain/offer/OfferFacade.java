@@ -6,6 +6,7 @@ import pl.bartoszmech.domain.offer.dto.OfferRequest;
 import pl.bartoszmech.domain.offer.dto.OfferResponse;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @AllArgsConstructor
@@ -54,13 +55,16 @@ public class OfferFacade {
 
         List<Offer> notExistingInDatabaseOffers = filterNotExistingOffers(fetchedOffers);
         log.info("Adding non existing offers to database...");
-        repository
+        List<OfferResponse> savedOffers = repository
                 .saveAll(notExistingInDatabaseOffers)
                 .stream()
                 .map(offer -> OfferMapper.mapFromOffer(offer))
                 .toList();
         log.info("Offers successfully saved in database!");
-        return notExistingInDatabaseOffers.stream().map(offer -> OfferMapper.mapFromOffer(offer)).toList();
+        return savedOffers.stream()
+                .filter(offer -> notExistingInDatabaseOffers.stream()
+                        .anyMatch(notExistingOffer -> Objects.equals(offer.jobUrl(), notExistingOffer.jobUrl())))
+                .toList();
     }
 
     private List<Offer> filterNotExistingOffers(List<Offer> fetchedOffers) {

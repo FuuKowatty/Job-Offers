@@ -24,10 +24,10 @@ public interface SampleApiBody {
     default String bodyWithOneOfferJson() {
         return """
                 {
-                    "title": "Junior DevOps Engineer",
-                    "company": "CDQ Poland",
+                    "title": "Junior Java Developer",
+                    "company": "Transition Technologies PSC",
                     "salary": "8k - 14k PLN",
-                    "offerUrl": "https://nofluffjobs.com/pl/job/junior-devops-engineer-cdq-poland-wroclaw-gnymtxqd"
+                    "offerUrl": "https://justjoin.it/offers/transition-technologies-psc-junior-java-developer"
                 }
                 """.trim();
     }
