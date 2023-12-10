@@ -14,3 +14,8 @@ api:
       schedule:
         time: "0 0 */3 * * *"
         enabled: true
+auth:
+  jwt:
+    expirationDays: 30
+    secret: ${JWT_SECRET}
+    issuer: job-offers-backend

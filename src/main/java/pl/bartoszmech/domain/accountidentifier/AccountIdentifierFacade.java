@@ -1,28 +1,28 @@
 package pl.bartoszmech.domain.accountidentifier;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.stereotype.Component;
+import pl.bartoszmech.domain.accountidentifier.dto.RegistrationResultDto;
 import pl.bartoszmech.domain.accountidentifier.dto.UserDto;
+import pl.bartoszmech.infrastructure.loginandregister.controller.dto.JwtResponseDto;
+import pl.bartoszmech.infrastructure.loginandregister.controller.dto.TokenRequestDto;
 
 @AllArgsConstructor
+@Component
 public class AccountIdentifierFacade {
     public static final String USER_NOT_EXISTS = "User with such username does not exist";
     public static final String USERNAME_TAKEN = "Provided username is already used by other user";
-    UserValidator validator;
     AccountIdentifierRepository repository;
 
     public UserDto findByUsername(String username) {
-        User user = repository
+        return UserMapper.mapFromUser(repository
                 .findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException(USER_NOT_EXISTS));
-        return UserMapper.mapFromUser(user);
+                .orElseThrow(() -> new BadCredentialsException(USER_NOT_EXISTS)));
     }
 
-    public UserDto register(UserDto userDto) {
-        //...validation in the future!
-        if(repository.isExistsByUsername(userDto.username())) {
-            throw new UserAlreadyExistsException(USERNAME_TAKEN);
-        }
-        User user = repository.register(UserMapper.mapToUser(userDto));
-        return UserMapper.mapFromUser(user);
+    public RegistrationResultDto register(UserDto userDto) {
+        User user = repository.save(UserMapper.mapToUser(userDto));
+        return new RegistrationResultDto(user.id(), true, user.username());
     }
 }
