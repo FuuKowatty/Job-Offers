@@ -15,7 +15,7 @@ import org.testcontainers.utility.DockerImageName;
 import pl.bartoszmech.BaseIntegrationTest;
 import pl.bartoszmech.domain.offer.dto.OfferResponse;
 import pl.bartoszmech.infrastructure.SampleApiBody;
-import pl.bartoszmech.infrastructure.loginandregister.controller.dto.JwtResponse;
+import pl.bartoszmech.infrastructure.loginandregister.controller.dto.JwtResponseDto;
 import pl.bartoszmech.infrastructure.offer.scheduler.OfferHttpScheduler;
 
 
@@ -116,11 +116,11 @@ public class UserAuthenticatedAndDisplayOffersIntegrationTest extends BaseIntegr
                         .andExpect(status().isOk())
                         .andReturn();
                     // then
-        JwtResponse jwtResponse = objectMapper.readValue(loginResponse.getResponse().getContentAsString(), new TypeReference<>() {});
-        assertThat(jwtResponse.username()).isEqualTo("someUser");
-        String token = jwtResponse.token();
+        JwtResponseDto jwtResponseDto = objectMapper.readValue(loginResponse.getResponse().getContentAsString(), new TypeReference<>() {});
+        assertThat(jwtResponseDto.username()).isEqualTo("someUser");
+        String token = jwtResponseDto.token();
         assertAll(
-                () -> assertThat(jwtResponse.username()).isEqualTo("someUser"),
+                () -> assertThat(jwtResponseDto.username()).isEqualTo("someUser"),
                 () -> assertThat(token).matches(Pattern.compile("^([A-Za-z0-9-_=]+\\.)+([A-Za-z0-9-_=])+\\.?$"))
         );
 

@@ -2,7 +2,7 @@ package pl.bartoszmech.infrastructure.loginandregister.controller.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record RegisterRequest(
+public record RegisterRequestDto(
         @NotBlank(message = "{username.not.blank}")
         String username,
 
