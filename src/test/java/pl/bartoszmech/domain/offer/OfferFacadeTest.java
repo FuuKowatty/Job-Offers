@@ -14,7 +14,7 @@ import java.util.List;
 
 class OfferFacadeTest {
     @Test
-    public void should_fetch_from_jobs_from_remote_and_save_all_offers_when_repository_is_empty() {
+    public void should_fetch_from_remote_and_save_all_offers_when_repository_is_empty() {
         // given
         OfferFacade offerFacade = new OfferFacadeTestConfiguration().offerFacadeForTests();
         assertThat(offerFacade.listOffers()).isEmpty();
@@ -23,7 +23,7 @@ class OfferFacadeTest {
         List<OfferResponse> result = offerFacade.fetchAllOffersAndSaveAllIfNotExists();
 
         // then
-        assertThat(result).hasSize(6);
+        assertThat(result).hasSize(2);
     }
 
     @Test
