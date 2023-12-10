@@ -9,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 import pl.bartoszmech.domain.offer.OfferFetcher;
+import pl.bartoszmech.domain.offer.dto.OfferApiResponse;
 import pl.bartoszmech.domain.offer.dto.OfferRequest;
 
 import java.util.Collections;
@@ -26,10 +27,10 @@ public class OfferHttp implements OfferFetcher {
     int port;
 
     @Override
-    public List<OfferRequest> handleFetchOffers() {
+    public List<OfferApiResponse> handleFetchOffers() {
         final HttpEntity<HttpHeaders> requestEntity = new HttpEntity<>(createHeader());
         try {
-            List<OfferRequest> fetchedOffers = fetchOffers(requestEntity);
+            List<OfferApiResponse> fetchedOffers = fetchOffers(requestEntity);
             if(fetchedOffers == null) {
                 log.error("Response body was null.");
                 throw new ResponseStatusException(NO_CONTENT);
@@ -41,8 +42,8 @@ public class OfferHttp implements OfferFetcher {
         }
     }
 
-    private List<OfferRequest> fetchOffers(HttpEntity<HttpHeaders> requestEntity) {
-        ResponseEntity<List<OfferRequest>> response = restTemplate.exchange(
+    private List<OfferApiResponse> fetchOffers(HttpEntity<HttpHeaders> requestEntity) {
+        ResponseEntity<List<OfferApiResponse>> response = restTemplate.exchange(
                 createUrl(),
                 HttpMethod.GET,
                 requestEntity,
