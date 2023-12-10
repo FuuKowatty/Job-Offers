@@ -1,6 +1,7 @@
 package pl.bartoszmech.validation;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.ResultActions;
@@ -25,6 +26,7 @@ public class DuplicateKeysIntegrationTest extends BaseIntegrationTest implements
     }
 
     @Test
+    @WithMockUser
     public void should_return_conflict_when_added_second_offer_with_this_same_url() throws Exception {
         // step 1
         // given && when

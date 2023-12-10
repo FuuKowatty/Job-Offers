@@ -7,14 +7,13 @@ import pl.bartoszmech.domain.offer.dto.OfferRequest;
 import pl.bartoszmech.domain.offer.dto.OfferResponse;
 
 import java.util.List;
-import java.util.Objects;
 
 
 @AllArgsConstructor
 @Log4j2
 public class OfferFacade {
     OfferRepository repository;
-    OfferFetcher fetcher;
+    OfferService service;
     public OfferResponse createOffer(OfferRequest offerDto) {
         String title = offerDto.title();
         String company = offerDto.company();
@@ -46,36 +45,8 @@ public class OfferFacade {
         return OfferMapper.mapFromOffer(offer);
     }
 
-    public List<OfferResponse> fetchAllOfferAndSaveAllIfNotExists() {
-        log.info("Starting fetch offers...");
-        List<OfferRequest> fetchedOffersDto = fetcher.handleFetchOffers();
-
-        log.info("Offers fetched successfully");
-        List<Offer> fetchedOffers = fetchedOffersDto
-                .stream()
-                .map(offerDto -> OfferMapper.mapToOfferWithoutId(offerDto))
-                .toList();
-
-        List<Offer> notExistingInDatabaseOffers = filterNotExistingOffers(fetchedOffers);
-        log.info("Adding non existing offers to database...");
-        List<OfferResponse> savedOffers = repository
-                .saveAll(notExistingInDatabaseOffers)
-                .stream()
-                .map(offer -> OfferMapper.mapFromOffer(offer))
-                .toList();
-        log.info("Offers successfully saved in database!");
-        return savedOffers.stream()
-                .filter(offer -> notExistingInDatabaseOffers.stream()
-                        .anyMatch(notExistingOffer -> Objects.equals(offer.jobUrl(), notExistingOffer.jobUrl())))
-                .toList();
-    }
-
-    private List<Offer> filterNotExistingOffers(List<Offer> fetchedOffers) {
-        return fetchedOffers
-                .stream()
-                .filter(offer -> !offer.jobUrl().isBlank())
-                .filter(offer -> !repository.existsByJobUrl(offer.jobUrl()))
-                .toList();
+    public List<OfferResponse> fetchAllOffersAndSaveAllIfNotExists() {
+        return service.fetchAllOfferAndSaveAllIfNotExists();
     }
 }
 

@@ -1,50 +1,64 @@
 package pl.bartoszmech.domain.accountidentifier;
 
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.authentication.BadCredentialsException;
+import pl.bartoszmech.domain.accountidentifier.dto.RegistrationResultDto;
 import pl.bartoszmech.domain.accountidentifier.dto.UserDto;
+import pl.bartoszmech.infrastructure.loginandregister.controller.dto.RegisterRequestDto;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 class AccountIdentifierFacadeTest {
-    AccountIdentifierFacade configurator = new AccountIdentifierConfiguration().createForTests(new AccountIdentifierRepositoryTestImpl());
-    @Test void should_find_user_by_username() {
-        //given
-        String username = "Jacex";
-        UserDto expectedUser = UserMapper.mapFromUser(configurator.repository.save(User.builder().username(username).password("123").build()));
-        //when
-        UserDto user = configurator.findByUsername(username);
-        //then
-        assertThat(user).isEqualTo(expectedUser);
+    AccountIdentifierFacade loginFacade = new AccountIdentifierFacade(
+            new AccountIdentifierRepositoryTestImpl()
+    );
+
+    @Test
+    public void should_register_user() {
+        // given
+        UserDto registerUserDto = new UserDto("username", "pass");
+
+        // when
+        RegistrationResultDto register = loginFacade.register(registerUserDto);
+
+        // then
+        assertAll(
+                () -> assertThat(register.created()).isTrue(),
+                () -> assertThat(register.username()).isEqualTo("username")
+        );
     }
 
-//    @Test void should_throw_exception_if_user_dont_exists() {
-//        //given
-//        String nonExistentUsername = "Jacex";
-//        //when&then
-//        assertThrows(UserNotFoundException.class, () -> configurator.findByUsername(nonExistentUsername));
-//    }
+    @Test
+    public void should_find_user_by_user_name() {
+        // given
+        UserDto registerUserDto = new UserDto("username", "pass");
+        RegistrationResultDto register = loginFacade.register(registerUserDto);
 
-//    @Test void should_throw_user_already_exists_exception() {
-//        //given
-//        String username = "Jacex";
-//        String password = "QWERY!@345";
-//        UserDto expectedUser = UserMapper.mapFromUser(configurator.repository.save(User.builder().username(username).password(password).build()));
-//        //when&then
-//        assertThrows(UserAlreadyExistsException.class, () -> configurator.register(UserDto.builder().username(username).password(password).build()));
-//    }
+        // when
+        UserDto userByName = loginFacade.findByUsername(register.username());
 
-//    @Test void should_successfully_register_user() {
-//        //given
-//        String username = "Jacex";
-//        String password = "QWERTYU!@3456";
-//        //when
-//        UserDto userDto = configurator.register(UserDto.builder().username(username).password(password).build());
-//        //then
-//        assertThat(userDto.username()).isEqualTo(username);
-//        assertThat(userDto.password()).isEqualTo(password);
-//    }
+        // then
+        assertThat(userByName).isEqualTo(new UserDto("username", "pass"));
+    }
+
+    @Test
+    public void should_throw_exception_when_user_not_found() {
+        // given
+        String username = "someUser";
+
+        // when
+        Throwable thrown = catchThrowable(() -> loginFacade.findByUsername(username));
+
+        // then
+        AssertionsForClassTypes.assertThat(thrown)
+                .isInstanceOf(BadCredentialsException.class)
+                .hasMessage("User with such username does not exist");
+    }
 }
 
 

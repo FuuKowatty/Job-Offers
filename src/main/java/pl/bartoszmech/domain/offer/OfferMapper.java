@@ -1,5 +1,6 @@
 package pl.bartoszmech.domain.offer;
 
+import pl.bartoszmech.domain.offer.dto.OfferApiResponse;
 import pl.bartoszmech.domain.offer.dto.OfferRequest;
 import pl.bartoszmech.domain.offer.dto.OfferResponse;
 
@@ -28,7 +29,7 @@ class OfferMapper {
                 .build();
     }
 
-    public static Offer mapToOfferWithoutId(OfferRequest offer) {
+    public static Offer mapToOfferFromApiResponse(OfferApiResponse offer) {
         return  Offer
                 .builder()
                 .title(offer.title())

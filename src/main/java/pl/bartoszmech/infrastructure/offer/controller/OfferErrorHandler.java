@@ -30,6 +30,6 @@ public class OfferErrorHandler {
     public ResponseEntity<OfferDuplicateKeys> offerDuplicate() {
         final String message = "Offer url already exists";
         log.error("DuplicateKeyException with message " + message);
-        return ResponseEntity.status(CONFLICT).body(new OfferDuplicateKeys(Collections.singletonList(message)));
+        return ResponseEntity.status(CONFLICT).body(new OfferDuplicateKeys(message));
     }
 }
