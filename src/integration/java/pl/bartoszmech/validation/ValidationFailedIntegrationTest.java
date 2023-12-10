@@ -1,10 +1,10 @@
 package pl.bartoszmech.validation;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.utility.DockerImageName;
@@ -26,24 +26,51 @@ public class ValidationFailedIntegrationTest extends BaseIntegrationTest impleme
     public static void propertyOverride(DynamicPropertyRegistry registry) {
         registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
     }
-
+//+ ";charset=UTF-8"
     @Test
+    @WithMockUser
     public void should_return_400_bad_request_and_validation_message_when_empty_and_null_in_offer_save_request() throws Exception {
         // given & when
-        ResultActions perform = mockMvc.perform(post("/offers")
+        MvcResult responseFromCreateOffers = mockMvc.perform(post("/offers")
                 .content(bodyOfInvalidCreateOfferRequest())
-                .contentType(APPLICATION_JSON_VALUE + ";charset=UTF-8")
-        );
-        // then
-        MvcResult mvcResult = perform.andExpect(status().isBadRequest()).andReturn();
-        String json = mvcResult.getResponse().getContentAsString();
-        ValidationResponse result = objectMapper.readValue(json, ValidationResponse.class);
+                .contentType(APPLICATION_JSON_VALUE ))
+        //then
+                .andExpect(status().isBadRequest()).andReturn();
+        ValidationResponse createOffersValidationMessages = objectMapper.readValue(responseFromCreateOffers.getResponse().getContentAsString(), ValidationResponse.class);
 
-        assertThat(result.messages()).containsExactlyInAnyOrder(
+        assertThat(createOffersValidationMessages.messages()).containsExactlyInAnyOrder(
                 "company must not be empty",
                 "title must not be empty",
                 "salary must not be empty",
                 "offerUrl must not be null",
                 "offerUrl must not be empty");
+
+        //given&when
+        MvcResult responseFromRegisterUserValidation = mockMvc.perform(post("/register")
+                .content(bodyOfInvalidRegisterRequest())
+                .contentType(APPLICATION_JSON_VALUE))
+        //then
+                .andExpect(status().isBadRequest())
+                .andReturn();
+        ValidationResponse registerRequestValidationMessages = objectMapper.readValue(responseFromRegisterUserValidation.getResponse().getContentAsString(), ValidationResponse.class);
+
+        assertThat(registerRequestValidationMessages.messages()).containsExactlyInAnyOrder(
+                "username must not be empty",
+                "password must not be empty"
+        );
+
+        //given&when
+        MvcResult responseFromTokenValidation = mockMvc.perform(post("/token")
+                        .content(bodyOfInvalidRegisterRequest())
+                        .contentType(APPLICATION_JSON_VALUE))
+                //then
+                .andExpect(status().isBadRequest())
+                .andReturn();
+        ValidationResponse tokenRequestValidationMessages = objectMapper.readValue(responseFromTokenValidation.getResponse().getContentAsString(), ValidationResponse.class);
+
+        assertThat(tokenRequestValidationMessages.messages()).containsExactlyInAnyOrder(
+                    "username must not be empty",
+                            "password must not be empty"
+        );
     }
 }
