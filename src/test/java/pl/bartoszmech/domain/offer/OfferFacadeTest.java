@@ -23,7 +23,7 @@ class OfferFacadeTest {
         List<OfferResponse> result = offerFacade.fetchAllOffersAndSaveAllIfNotExists();
 
         // then
-        assertThat(result).hasSize(6);
+        assertThat(result).hasSize(2);
     }
 
     @Test
