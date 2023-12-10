@@ -2,6 +2,7 @@ package pl.bartoszmech.domain.offer;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.cache.annotation.Cacheable;
 import pl.bartoszmech.domain.offer.dto.OfferRequest;
 import pl.bartoszmech.domain.offer.dto.OfferResponse;
 
@@ -31,6 +32,7 @@ public class OfferFacade {
         return OfferMapper.mapFromOffer(savedOffer);
     }
 
+    @Cacheable(cacheNames = "jobOffers")
     public List<OfferResponse> listOffers() {
         List<Offer> offers = repository.findAll();
         return offers

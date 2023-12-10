@@ -1,10 +1,12 @@
 spring:
-  redis:
-    host: ${REDIS_HOST:localhost}
-    port: ${REDIS_PORT:63792}
   cache:
     type: redis
+    redis:
+      time-to-live: PT60M
   data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:63792}
     mongodb:
       auto-index-creation: true
       uri: mongodb://admin:admin@localhost:27017/offer
