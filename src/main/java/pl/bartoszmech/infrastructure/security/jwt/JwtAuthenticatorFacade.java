@@ -15,8 +15,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
-import pl.bartoszmech.infrastructure.loginandregister.controller.dto.JwtResponseDto;
-import pl.bartoszmech.infrastructure.loginandregister.controller.dto.TokenRequestDto;
+import pl.bartoszmech.infrastructure.loginandregister.controller.dto.JwtResponse;
+import pl.bartoszmech.infrastructure.loginandregister.controller.dto.TokenRequest;
 
 
 @AllArgsConstructor
@@ -27,13 +27,13 @@ public class JwtAuthenticatorFacade {
     private final Clock clock;
     private final JwtConfigurationProperties properties;
 
-    public JwtResponseDto authenticateAndGenerateToken(TokenRequestDto loginRequest) {
+    public JwtResponse authenticateAndGenerateToken(TokenRequest loginRequest) {
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password()));
         User user = (User) authenticate.getPrincipal();
         String token = createToken(user);
         String username = user.getUsername();
-        return JwtResponseDto.builder()
+        return JwtResponse.builder()
                 .token(token)
                 .username(username)
                 .build();
