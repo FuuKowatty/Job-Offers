@@ -76,4 +76,13 @@ public interface SampleApiBody {
     default String bodyWithZeroOffersJson() {
         return "[]";
     }
+
+    default String bodyOfInvalidRegisterRequest() {
+        return """
+                {
+                "username": "",
+                "password": ""
+                }
+                """.trim();
+    }
 }
