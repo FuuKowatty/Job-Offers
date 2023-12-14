@@ -2,21 +2,18 @@ package pl.bartoszmech.domain.accountidentifier;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.bartoszmech.domain.accountidentifier.dto.RegistrationResultDto;
 import pl.bartoszmech.domain.accountidentifier.dto.UserDto;
-import pl.bartoszmech.infrastructure.loginandregister.controller.dto.RegisterRequestDto;
 
 @AllArgsConstructor
 public class AccountIdentifierFacade {
-    public static final String USER_NOT_EXISTS = "User with such username does not exist";
-    public static final String USERNAME_TAKEN = "Provided username is already used by other user";
+    private static final String USERNAME_NOT_EXISTS = "User with such username does not exist";
     AccountIdentifierRepository repository;
 
     public UserDto findByUsername(String username) {
         return UserMapper.mapFromUser(repository
                 .findByUsername(username)
-                .orElseThrow(() -> new BadCredentialsException(USER_NOT_EXISTS)));
+                .orElseThrow(() -> new BadCredentialsException(USERNAME_NOT_EXISTS)));
     }
 
     public RegistrationResultDto register(UserDto registerRequestDto) {

@@ -63,7 +63,7 @@ public class UserAuthenticatedAndDisplayOffersIntegrationTest extends BaseIntegr
 //step 3: user tried to get JWT token by requesting POST /token with username=someUser, password=somePassword and system returned UNAUTHORIZED(401)
         //given&when
         mockMvc
-                .perform(post("/token")
+                .perform(post("/accounts/token")
                 .content("""
                         {
                         "username": "someUser",
@@ -89,7 +89,7 @@ public class UserAuthenticatedAndDisplayOffersIntegrationTest extends BaseIntegr
 //step 5: user made POST /register with username=someUser, password=somePassword and system registered user with status OK(200)
         //given&when
         mockMvc
-                .perform(post("/register")
+                .perform(post("/accounts/register")
                         .content("""
                         {
                         "username": "someUser",
@@ -105,7 +105,7 @@ public class UserAuthenticatedAndDisplayOffersIntegrationTest extends BaseIntegr
 //step 6: user tried to get JWT token by requesting POST /token with username=someUser, password=somePassword and system returned OK(200) and jwttoken=AAAA.BBBB.CCC
         MvcResult loginResponse =
                 mockMvc
-                    .perform(post("/token")
+                    .perform(post("/accounts/token")
                             .content("""
                             {
                             "username": "someUser",
@@ -184,7 +184,6 @@ public class UserAuthenticatedAndDisplayOffersIntegrationTest extends BaseIntegr
             //then
                             .andExpect(status().isOk())
                             .andReturn();
-
             OfferResponse offerFoundById = objectMapper.readValue(responseFromGetOrderById.getResponse().getContentAsString(), new TypeReference<>() {});
             assertThat(offerFoundById).isEqualTo(listOfTwoOffers.get(0));
 

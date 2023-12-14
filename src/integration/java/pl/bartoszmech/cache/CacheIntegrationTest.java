@@ -52,7 +52,7 @@ public class CacheIntegrationTest extends BaseIntegrationTest {
     public void should_save_offers_to_cache_and_then_invalidate_by_time_to_live() throws Exception {
         // step 1: someUser was registered with somePassword
         // given & when
-        ResultActions registerAction = mockMvc.perform(post("/register")
+        ResultActions registerAction = mockMvc.perform(post("/accounts/register")
                 .content("""
                         {
                         "username": "someUser",
@@ -66,7 +66,7 @@ public class CacheIntegrationTest extends BaseIntegrationTest {
 
         // step 2: login
         // given && when
-        ResultActions successLoginRequest = mockMvc.perform(post("/token")
+        ResultActions successLoginRequest = mockMvc.perform(post("/accounts/token")
                 .content("""
                         {
                         "username": "someUser",

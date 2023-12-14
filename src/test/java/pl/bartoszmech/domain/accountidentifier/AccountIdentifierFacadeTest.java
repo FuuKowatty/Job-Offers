@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 
 class AccountIdentifierFacadeTest {
-    AccountIdentifierFacade loginFacade = new AccountIdentifierConfiguration().createForTests(new AccountIdentifierRepositoryTestImpl());
+    AccountIdentifierFacade loginFacade = new AccountIdentifierFacade(new AccountIdentifierRepositoryTestImpl());
 
     @Test
     public void should_register_user() {
