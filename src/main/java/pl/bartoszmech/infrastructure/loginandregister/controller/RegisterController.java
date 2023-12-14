@@ -17,15 +17,11 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @AllArgsConstructor
 public class RegisterController {
-
     private final AccountIdentifierFacade loginAndRegisterFacade;
-    private final PasswordEncoder bCryptPasswordEncoder;
-
+    PasswordEncoder passwordEncoder;
     @PostMapping("/register")
     public ResponseEntity<RegistrationResultDto> register(@Valid @RequestBody RegisterRequestDto registerUserDto) {
-        String encodedPassword = bCryptPasswordEncoder.encode(registerUserDto.password());
-        RegistrationResultDto registerResult = loginAndRegisterFacade.register(
-                new UserDto(registerUserDto.username(), encodedPassword));
+        RegistrationResultDto registerResult = loginAndRegisterFacade.register(new UserDto(registerUserDto.username(), passwordEncoder.encode(registerUserDto.password())));
         return ResponseEntity.status(CREATED).body(registerResult);
     }
 }
