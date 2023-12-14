@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.dao.DuplicateKeyException;
 import pl.bartoszmech.domain.offer.dto.OfferRequest;
 import pl.bartoszmech.domain.offer.dto.OfferResponse;
+import pl.bartoszmech.domain.shared.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -93,7 +94,7 @@ class OfferFacadeTest {
 
         // then
         AssertionsForClassTypes.assertThat(thrown)
-                .isInstanceOf(OfferNotFoundException.class)
+                .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessage("Offer cannot be found with id: 100");
     }
 

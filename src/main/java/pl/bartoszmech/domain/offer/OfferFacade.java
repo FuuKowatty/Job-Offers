@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.cache.annotation.Cacheable;
 import pl.bartoszmech.domain.offer.dto.OfferRequest;
 import pl.bartoszmech.domain.offer.dto.OfferResponse;
+import pl.bartoszmech.domain.shared.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class OfferFacade {
     }
 
     public OfferResponse getOfferById(String id) {
-        Offer offer = repository.findById(id).orElseThrow(() -> new OfferNotFoundException(id));
+        Offer offer = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
         return OfferMapper.mapFromOffer(offer);
     }
 
