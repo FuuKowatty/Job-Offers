@@ -60,16 +60,11 @@ public class UserAuthenticatedAndDisplayOffersIntegrationTest extends BaseIntegr
         assertThat(offersAfterFirstRun).isEmpty();
 
 
-//step 3: user tried to get JWT token by requesting POST /token with username=someUser, password=somePassword and system returned UNAUTHORIZED(401)
+//step 3: user tried to get JWT token by requesting POST /token with username=RandomNickname123, password=WSX and system returned UNAUTHORIZED(401)
         //given&when
         mockMvc
                 .perform(post("/accounts/token")
-                .content("""
-                        {
-                        "username": "someUser",
-                        "password": "somePassword"
-                        }
-                        """.trim())
+                .content(bodyOfOneUserRegisterRequest())
                 .contentType(APPLICATION_JSON_VALUE))
         // then
                 .andExpect(status().isUnauthorized());
@@ -86,41 +81,31 @@ public class UserAuthenticatedAndDisplayOffersIntegrationTest extends BaseIntegr
                 .andExpect(status().isForbidden());
 
 
-//step 5: user made POST /register with username=someUser, password=somePassword and system registered user with status OK(200)
+//step 5: user made POST /register with username=RandomNickname123, password=WSX and system registered user with status OK(200)
         //given&when
         mockMvc
                 .perform(post("/accounts/register")
-                        .content("""
-                        {
-                        "username": "someUser",
-                        "password": "somePassword"
-                        }
-                        """.trim())
+                        .content(bodyOfOneUserRegisterRequest())
                         .contentType(APPLICATION_JSON_VALUE))
         // then
                 .andExpect(status().isCreated());
 
 
 
-//step 6: user tried to get JWT token by requesting POST /token with username=someUser, password=somePassword and system returned OK(200) and jwttoken=AAAA.BBBB.CCC
+//step 6: user tried to get JWT token by requesting POST /token with username=RandomNickname123, password=zaq1@WSX and system returned OK(200) and jwttoken=AAAA.BBBB.CCC
         MvcResult loginResponse =
                 mockMvc
                     .perform(post("/accounts/token")
-                            .content("""
-                            {
-                            "username": "someUser",
-                            "password": "somePassword"
-                            }
-                            """.trim())
+                            .content(bodyOfOneUserRegisterRequest())
                             .contentType(APPLICATION_JSON_VALUE))
                         .andExpect(status().isOk())
                         .andReturn();
                     // then
         JwtResponseDto jwtResponseDto = objectMapper.readValue(loginResponse.getResponse().getContentAsString(), new TypeReference<>() {});
-        assertThat(jwtResponseDto.username()).isEqualTo("someUser");
+        assertThat(jwtResponseDto.username()).isEqualTo("RandomNickname123");
         String token = jwtResponseDto.token();
         assertAll(
-                () -> assertThat(jwtResponseDto.username()).isEqualTo("someUser"),
+                () -> assertThat(jwtResponseDto.username()).isEqualTo("RandomNickname123"),
                 () -> assertThat(token).matches(Pattern.compile("^([A-Za-z0-9-_=]+\\.)+([A-Za-z0-9-_=])+\\.?$"))
         );
 
