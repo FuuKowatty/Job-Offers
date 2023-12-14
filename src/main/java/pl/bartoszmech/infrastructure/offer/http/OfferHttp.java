@@ -3,19 +3,20 @@ package pl.bartoszmech.infrastructure.offer.http;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 import pl.bartoszmech.domain.offer.OfferFetcher;
 import pl.bartoszmech.domain.offer.dto.OfferApiResponse;
-import pl.bartoszmech.domain.offer.dto.OfferRequest;
-
-import java.util.Collections;
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @AllArgsConstructor
@@ -45,7 +46,7 @@ public class OfferHttp implements OfferFetcher {
     private List<OfferApiResponse> fetchOffers(HttpEntity<HttpHeaders> requestEntity) {
         ResponseEntity<List<OfferApiResponse>> response = restTemplate.exchange(
                 createUrl(),
-                HttpMethod.GET,
+                GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
                 });

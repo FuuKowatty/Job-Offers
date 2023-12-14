@@ -46,7 +46,7 @@ public class ValidationFailedIntegrationTest extends BaseIntegrationTest impleme
                 "offerUrl must not be empty");
 
         //given&when
-        MvcResult responseFromRegisterUserValidation = mockMvc.perform(post("/register")
+        MvcResult responseFromRegisterUserValidation = mockMvc.perform(post("/accounts/register")
                 .content(bodyOfInvalidRegisterRequest())
                 .contentType(APPLICATION_JSON_VALUE))
         //then
@@ -60,7 +60,7 @@ public class ValidationFailedIntegrationTest extends BaseIntegrationTest impleme
         );
 
         //given&when
-        MvcResult responseFromTokenValidation = mockMvc.perform(post("/token")
+        MvcResult responseFromTokenValidation = mockMvc.perform(post("/accounts/token")
                         .content(bodyOfInvalidRegisterRequest())
                         .contentType(APPLICATION_JSON_VALUE))
                 //then

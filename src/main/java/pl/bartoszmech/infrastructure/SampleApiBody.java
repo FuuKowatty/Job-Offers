@@ -77,6 +77,14 @@ public interface SampleApiBody {
         return "[]";
     }
 
+    default String bodyOfOneUserRegisterRequest() {
+        return """
+                {
+                "username": "RandomNickname123",
+                "password": "zaq1@WSX"
+                }
+                """.trim();
+    }
     default String bodyOfInvalidRegisterRequest() {
         return """
                 {

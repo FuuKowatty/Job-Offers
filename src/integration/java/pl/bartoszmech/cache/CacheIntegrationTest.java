@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 import pl.bartoszmech.domain.offer.OfferFacade;
+import pl.bartoszmech.infrastructure.SampleApiBody;
 import pl.bartoszmech.infrastructure.loginandregister.controller.dto.JwtResponseDto;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -25,7 +26,7 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-public class CacheIntegrationTest extends BaseIntegrationTest {
+public class CacheIntegrationTest extends BaseIntegrationTest implements SampleApiBody {
     @Container
     private static final GenericContainer<?> REDIS;
 
@@ -52,13 +53,8 @@ public class CacheIntegrationTest extends BaseIntegrationTest {
     public void should_save_offers_to_cache_and_then_invalidate_by_time_to_live() throws Exception {
         // step 1: someUser was registered with somePassword
         // given & when
-        ResultActions registerAction = mockMvc.perform(post("/register")
-                .content("""
-                        {
-                        "username": "someUser",
-                        "password": "somePassword"
-                        }
-                        """.trim())
+        ResultActions registerAction = mockMvc.perform(post("/accounts/register")
+                .content(bodyOfOneUserRegisterRequest())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         );
         // then
@@ -66,13 +62,8 @@ public class CacheIntegrationTest extends BaseIntegrationTest {
 
         // step 2: login
         // given && when
-        ResultActions successLoginRequest = mockMvc.perform(post("/token")
-                .content("""
-                        {
-                        "username": "someUser",
-                        "password": "somePassword"
-                        }
-                        """.trim())
+        ResultActions successLoginRequest = mockMvc.perform(post("/accounts/token")
+                .content(bodyOfOneUserRegisterRequest())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         );
         // then

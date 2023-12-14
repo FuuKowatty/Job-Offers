@@ -10,13 +10,10 @@ import pl.bartoszmech.infrastructure.loginandregister.controller.dto.RegisterReq
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 class AccountIdentifierFacadeTest {
-    AccountIdentifierFacade loginFacade = new AccountIdentifierFacade(
-            new AccountIdentifierRepositoryTestImpl()
-    );
+    AccountIdentifierFacade loginFacade = new AccountIdentifierFacade(new AccountIdentifierRepositoryTestImpl());
 
     @Test
     public void should_register_user() {
