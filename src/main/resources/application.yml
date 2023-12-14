@@ -1,0 +1,28 @@
+spring:
+  cache:
+    type: redis
+    redis:
+      time-to-live: PT60M
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:63792}
+    mongodb:
+      auto-index-creation: true
+      uri: mongodb://admin:admin@localhost:27017/offer
+api:
+  offer:
+    http:
+      config:
+        port: 5057
+        uri: http://ec2-3-120-147-150.eu-central-1.compute.amazonaws.com
+        connectionTimeout: 1000
+        readTimeout: 1000
+      schedule:
+        time: "0 0 */3 * * *"
+        enabled: true
+auth:
+  jwt:
+    expirationDays: 30
+    secret: ${JWT_SECRET}
+    issuer: job-offers-backend

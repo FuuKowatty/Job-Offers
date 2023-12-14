@@ -1,0 +1,9 @@
+api:
+  offer:
+    http:
+      schedule:
+        time: "*/1 * * * * *"
+        enabled: false
+spring:
+  cache:
+    type: none
